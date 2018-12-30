@@ -1,9 +1,15 @@
 $(document).ready(function() {
   $.getJSON('http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string', function(data) {
-    data.forEach(function(character) {
-      var tblRow = "<tr>" + "<td>" + character.string + "</td>" +
-      "<td>" + character.kDefinition + "</td>" + "<td>" + character.kMandarin + "</td>" + "</tr>"
-      $(tblRow).appendTo("#characters tbody");
-    });
+    getRandomCharacter(data);
   });
+
 });
+
+function getRandomCharacter(data) {
+  const max = data.length;
+  const randomNumber = Math.floor(Math.random() * (max));
+  const character = data[randomNumber];
+  $('#character').text(function() {
+    return character.string;
+  });
+}
