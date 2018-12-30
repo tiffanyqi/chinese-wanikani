@@ -9,10 +9,14 @@
     <div class="container">
       <div id="character"></div>
       <form>
-        <div id="type"></div> <input type="text" id="userInput"><br>
+        <div id="type"></div>
+        <input type="text" id="userInput"><br>
         <input type="submit" value="Submit" onclick="return validate()">
+        <input type="submit" value="I don't know" onclick="return displayAnswer()">
+        <input type="submit" value="Get another character" onclick="return loadRandomCharacter()">
       </form>
       <div id="results"></div>
+      <div id="answer"></div>
     </div>
   </body>
 </html>
