@@ -2,12 +2,17 @@
   <head>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
-    <script type="text/javascript" src="script.js"> </script>
+    <script type="text/javascript" src="script.js"></script>
   </head>
 
   <body>
     <div class="container">
       <div id="character"></div>
+      <form>
+        <div id="type"></div> <input type="text" id="userInput"><br>
+        <input type="submit" value="Submit" onclick="return validate()">
+      </form>
+      <div id="results"></div>
     </div>
   </body>
 </html>
