@@ -19,6 +19,7 @@ Character {
   pronunciations,
   sound byte?,
   user,
+  encountered,
   % correct pronunciation,
   % correct meaning,
 }
