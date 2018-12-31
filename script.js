@@ -39,6 +39,19 @@ function displayAnswer() {
   return false;
 }
 
+function clearFields() {
+  $('#answer').text(function() {
+    return '';
+  });
+  $('#character').text(function() {
+    return '';
+  });
+  $('#results').text(function() {
+    return '';
+  });
+  document.getElementById('userInput').value = '';
+}
+
 /* Helper functions */
 
 function getRandomNumber(max) {
@@ -76,17 +89,4 @@ function isUserCorrect(userInput, type, character) {
     result = true;
   }
   return result;
-}
-
-function clearFields() {
-  $('#answer').text(function() {
-    return '';
-  });
-  $('#character').text(function() {
-    return '';
-  });
-  $('#results').text(function() {
-    return '';
-  });
-  document.getElementById('userInput').value = '';
 }
