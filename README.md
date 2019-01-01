@@ -34,18 +34,22 @@ Character {
 # TODOs:
 
 ## WEBAPP
-- connect to django
-- display the number of characters learned and will be learned
-- display characters in order by level
-- connect to sound?
+- home page - characters of your level and your progress
+- learning / review page
+- all characters page - display the number of characters learned and will be learned
+- all characters page - display characters in order by level
+- individual character page
 - make it look nice
 
 ## DB
 - save characters in db
 - remember which characters are correct and which are wrong
-- add vocab
+- add vocab from dictionary
 
 ## Learning system
 - Leveling
 - Apprentice/Guru/Master/Burned
 - Timing for when to learn again
+
+## V2
+- incorporate sound to characters
