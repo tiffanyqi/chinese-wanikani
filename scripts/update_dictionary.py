@@ -6,16 +6,16 @@ data = {}
 with open('data/hsk.txt', 'r') as file:
   for line in file:
     split_line = line.split(', ')
-    level = split_line[0]
+    level = int(split_line[0])
     characters = split_line[1]
     for character in characters.split(' '):
       data[character] = {'hsk_level': level}
 
 # extracts character frequencies, pinyin, and definition
 with open('data/character-frequency.txt', 'r') as file:
-  for line in file:
+  for line in file.read().split('\n'):
     split_line = line.split('\t')
-    frequency_order = split_line[0]
+    frequency_order = int(split_line[0])
     character = split_line[1]
     pinyin = split_line[4]
     definition = split_line[5]
