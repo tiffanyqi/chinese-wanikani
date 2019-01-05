@@ -8,28 +8,10 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - Dictionary data from https://www.mdbg.net/chinese/dictionary?page=cedict
 - Other character data from http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string, which came from http://www.unicode.org/charts/unihan.html
 
-
-# Schema
-
-User {
-  name,
-  email,
-  level,
-}
-Character {
-  string,
-  user level,
-  frequency,
-  definitions,
-  pronunciations,
-  sound byte?,
-  user,
-  encountered,
-  % correct pronunciation,
-  % correct meaning,
-  hsk level,
-  level (apprentice, etc)
-}
+# Schema:
+- Each character has it's own information based on the full JSON dictionary and various information from the user
+- User class
+- Session class - each review or lesson session
 
 # TODOs:
 
@@ -40,16 +22,22 @@ Character {
 - all characters page - display characters in order by level
 - individual character page
 - make it look nice
+- settings page
+- signup/login page
 
 ## DB
 - save characters in db
 - remember which characters are correct and which are wrong
-- add vocab from dictionary
 
 ## Learning system
 - Leveling
 - Apprentice/Guru/Master/Burned
-- Timing for when to learn again
+- Timing for when to learn again: https://knowledge.wanikani.com/wanikani/srs-stages/
 
 ## V2
 - incorporate sound to characters
+- leveling streak?
+- character breakdown
+- explanation breakdown
+- user input
+- vocabulary from dictionary
