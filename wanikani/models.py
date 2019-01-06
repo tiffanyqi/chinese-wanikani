@@ -41,6 +41,7 @@ class BaseCharacter(models.Model):
     )
     hsk_level = models.IntegerField(default=0)
     frequency = models.IntegerField(default=0)
+    user_level = models.IntegerField(default=0)
 
 
 class LevelCharacter(models.Model):
