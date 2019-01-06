@@ -33,7 +33,7 @@ class BaseCharacter(models.Model):
     character = models.CharField(null=True, max_length=50)
     definitions = ListCharField(
       base_field=models.CharField(max_length=50),
-      max_length=300,
+      max_length=400,
     )
     pinyin = ListCharField(
       base_field=models.CharField(max_length=50),
