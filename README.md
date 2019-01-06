@@ -9,9 +9,13 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - Other character data from http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string, which came from http://www.unicode.org/charts/unihan.html
 
 # Schema:
-- Each character has it's own information based on the full JSON dictionary and various information from the user
+- Each character has its own information based on the full JSON dictionary and various information from the user
 - User class
 - Session class - each review or lesson session
+
+# Database population:
+- Save characters in the database: `python3 manage.py populate_characters_in_db`
+- Update levels for characters: `python3 manage.py update_levels`
 
 # TODOs:
 
@@ -24,13 +28,9 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - make it look nice
 - settings page
 - signup/login page
-
-## DB
-- save characters in db
-- remember which characters are correct and which are wrong
+- review page: remember which characters are correct and which are wrong
 
 ## Learning system
-- Leveling
 - Apprentice/Guru/Master/Burned
 - Timing for when to learn again: https://knowledge.wanikani.com/wanikani/srs-stages/
 

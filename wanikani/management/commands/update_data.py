@@ -34,7 +34,7 @@ class Command(BaseCommand):
               'pinyin': pinyin,
               'definition': definition,
             })
-          except KeyError as e:
+          except KeyError:
             print(character, ' does not exist in the data set')
 
     def dump_json(self):
