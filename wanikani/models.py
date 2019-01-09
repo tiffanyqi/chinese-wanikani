@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, UserManager
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 from django.utils import timezone
-from django_mysql.models import JSONField, ListCharField
 
 
 class User(AbstractBaseUser):
@@ -31,11 +31,11 @@ class Session(models.Model):
 
 class BaseCharacter(models.Model):
     character = models.CharField(null=True, max_length=50)
-    definitions = ListCharField(
+    definitions = ArrayField(
       base_field=models.CharField(max_length=50),
       max_length=400,
     )
-    pinyin = ListCharField(
+    pinyin = ArrayField(
       base_field=models.CharField(max_length=50),
       max_length=300,
     )

@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'django_mysql',
     'wanikani',
 ]
 
@@ -82,15 +81,12 @@ WSGI_APPLICATION = 'wanikani.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'wanikani',
-        'USER': 'root',
-        'PASSWORD': os.environ.get('MYSQL_ROOT'),
-        'HOST': 'localhost',
-        'PORT': '8000',
-        'OPTIONS': {
-            'charset': 'utf8mb4'
-        },
+        'USER': 'tiffany',
+        'PASSWORD': os.environ.get('PSQL_ROOT'),
+        'HOST': '',
+        'PORT': '',
     }
 }
 
