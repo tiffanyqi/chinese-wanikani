@@ -7,7 +7,7 @@ from django.utils import timezone
 class User(AbstractBaseUser):
     name = models.CharField(null=True, max_length=50)
     email = models.CharField(null=True, max_length=50)
-    level = models.CharField(default=0, max_length=50)
+    level = models.CharField(default=1, max_length=50)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
     username = models.CharField(null=True, max_length=50)

@@ -1,3 +1,10 @@
 #character {
   font-size: 100px;
 }
+
+.character-container {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 5px;
+}
