@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% block top_html %}
+
+<html>
+  {% endblock %}
+    <head>
+      <title>Learn Chinese</title>
+      {% block head_css %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+      {% endblock %}
+      {% block head_js %}
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+        <script type="text/javascript" src="{% static "js/script.js" %}"></script>
+      {% endblock %}
+    </head>
+
+  <body>
+    <div class="wrapper">
+      {% block content %}
+          {% load static %}
+      {% endblock %}
+    </div>
+    <footer class="footer"></footer>
+  </body>
+</html>

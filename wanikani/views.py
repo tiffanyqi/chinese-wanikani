@@ -1,16 +1,20 @@
-from django.http import HttpResponse
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from wanikani.models import BaseCharacter
+from wanikani.models import BaseCharacter, User
 
 
 def index(request):
-    # test user level
-    context = {
-        'characters': BaseCharacter.objects.filter(user_level=50),
-        'user': request.user,
-    }
-    return render(request, 'wanikani/index.html', context)
+    try:
+        user = User.objects.get(email=request.user.email)
+        context = {
+            'characters': BaseCharacter.objects.filter(user_level=1),
+            'user': user,
+        }
+        return render(request, 'wanikani/index.html', context)
+    except:
+        return render(request, 'wanikani/index_logged_out.html')
 
 def character(request, character):
     base_character = BaseCharacter.objects.get(character=character)
@@ -21,3 +25,8 @@ def character(request, character):
 
 def test(request):
     return render(request, 'wanikani/test.html')
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return render(request, 'wanikani/index_logged_out.html')

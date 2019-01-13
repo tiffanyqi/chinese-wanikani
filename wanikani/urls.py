@@ -16,6 +16,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -24,4 +25,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('test/', views.test, name='test'),
     path('<str:character>/', views.character, name='character'),
+
+    path('^login/$', auth_views.LoginView, name='login'),
+    path('^logout/$', views.logout_view, name='logout'),
 ]

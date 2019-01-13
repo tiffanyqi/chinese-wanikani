@@ -21,14 +21,15 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 
 ## WEBAPP
 - home page - characters of your level and your progress
-- learning / review page
-- all characters page - display the number of characters learned and will be learned
-- all characters page - display characters in order by level
+- learning page
+- review page - remember which characters are correct and which are wrong
+- all characters page
+  - display the number of characters learned and will be learned
+  - display characters in order by level
 - individual character page
-- make it look nice
 - settings page
 - signup/login page
-- review page: remember which characters are correct and which are wrong
+- make it look nice
 
 ## Learning system
 - Apprentice/Guru/Master/Burned

@@ -1,22 +1,23 @@
+{% extends "wanikani/base.html" %}
 {% load staticfiles %}
 
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
-    <script type="text/javascript" src="{% static "js/script.js" %}"></script>
-  </head>
+{% block head %}
+  {{ block.super }}
+{% endblock %}
 
-  <body>
-    <div class="container">
-      <ul>
-          <li>Character: {{ character.character }}</li>
-          <li>Frequency: {{ character.frequency }}</li>
-          <li>Pinyin: {{ character.pinyin }}</li>
-          <li>Definition: {{ character.definitions }}</li>
-          <li>HSK Level: {{ character.hsk_level }}</li>
-          <li>User Level: {{ character.user_level }}</li>
-      </ul>
-    </div>
-  </body>
-</html>
+{% block content %}
+  <div class="container">
+    <ul>
+      <li>Character: {{ character.character }}</li>
+      <li>Frequency: {{ character.frequency }}</li>
+      <li>Pinyin: {{ character.pinyin }}</li>
+      <li>Definition: {{ character.definitions }}</li>
+      <li>HSK Level: {{ character.hsk_level }}</li>
+      <li>User Level: {{ character.user_level }}</li>
+    </ul>
+  </div>
+{% endblock %}
+
+{% block bottom %}
+  {{ block.super }}
+{% endblock %}

@@ -1,24 +1,25 @@
+{% extends "wanikani/base.html" %}
 {% load staticfiles %}
 
-<html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
-    <script type="text/javascript" src="{% static "js/script.js" %}"></script>
-  </head>
+{% block head %}
+  {{ block.super }}
+{% endblock %}
 
-  <body>
-    <div class="container">
-      <div id="character"></div>
-      <form>
-        <div id="type"></div>
-        <input type="text" id="userInput"><br>
-        <input type="submit" value="Submit" onclick="return validate()">
-        <input type="submit" value="I don't know" onclick="return displayAnswer()">
-        <input type="submit" value="Get another character" onclick="return loadRandomCharacter()">
-      </form>
-      <div id="results"></div>
-      <div id="answer"></div>
-    </div>
-  </body>
-</html>
+{% block content %}
+  <div class="container">
+    <div id="character"></div>
+    <form>
+      <div id="type"></div>
+      <input type="text" id="userInput"><br>
+      <input type="submit" value="Submit" onclick="return validate()">
+      <input type="submit" value="I don't know" onclick="return displayAnswer()">
+      <input type="submit" value="Get another character" onclick="return loadRandomCharacter()">
+    </form>
+    <div id="results"></div>
+    <div id="answer"></div>
+  </div>
+{% endblock %}
+
+{% block bottom %}
+  {{ block.super }}
+{% endblock %}
