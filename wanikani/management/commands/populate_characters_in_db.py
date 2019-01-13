@@ -14,14 +14,17 @@ class Command(BaseCommand):
           for character in data:
             character_obj = data[character]
             try:
-                definitions = re.split(', |/', character_obj['definition'])
-                pinyin = character_obj['pinyin'].split('/')
+                definitions = json.dumps(re.split(', |/', character_obj['definition']))
+                pinyin = json.dumps(character_obj['pinyin'].split('/'))
                 hsk_level = character_obj['hsk_level']
                 frequency = character_obj['frequency']
-                try:
-                    BaseCharacter.objects.get(definitions=definitions, character=character, pinyin=pinyin, hsk_level=hsk_level, frequency=frequency)
-                except BaseCharacter.DoesNotExist as e:
-                    BaseCharacter(definitions=definitions, character=character, pinyin=pinyin, hsk_level=hsk_level, frequency=frequency).save()
+                BaseCharacter.objects.get_or_create(
+                    definitions=definitions,
+                    character=character,
+                    pinyin=pinyin,
+                    hsk_level=hsk_level,
+                    frequency=frequency
+                )
             except KeyError as e:
                 print(character, 'KeyError',  'key', e)
             except DataError as e:

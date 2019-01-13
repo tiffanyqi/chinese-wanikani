@@ -9,7 +9,14 @@
 
   <body>
     <div class="container">
-      {{ character }}
+      <ul>
+          <li>Character: {{ character.character }}</li>
+          <li>Frequency: {{ character.frequency }}</li>
+          <li>Pinyin: {{ character.pinyin }}</li>
+          <li>Definition: {{ character.definitions }}</li>
+          <li>HSK Level: {{ character.hsk_level }}</li>
+          <li>User Level: {{ character.user_level }}</li>
+      </ul>
     </div>
   </body>
 </html>
