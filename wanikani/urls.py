@@ -24,8 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('test/', views.test, name='test'),
-    path('<str:character>/', views.character, name='character'),
+    # path('<str:character>/', views.character, name='character'),
 
-    path('^login/$', auth_views.LoginView, name='login'),
-    path('^logout/$', views.logout_view, name='logout'),
+    path('login/', auth_views.LoginView, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('signup/', views.signup, name='signup'),
 ]

@@ -1,7 +1,11 @@
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as log_in
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
+from wanikani.forms import SignUpForm
 from wanikani.models import BaseCharacter, User
 
 
@@ -30,3 +34,20 @@ def test(request):
 def logout_view(request):
     logout(request)
     return render(request, 'wanikani/index_logged_out.html')
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            log_in(request, user)
+            return HttpResponseRedirect('/')
+
+    else:
+        form = SignUpForm()
+
+    return render(request, 'wanikani/signup.html', {'form': form})

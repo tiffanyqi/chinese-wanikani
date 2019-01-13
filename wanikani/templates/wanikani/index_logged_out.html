@@ -7,7 +7,8 @@
 
 {% block content %}
   <div class="container">
-    Login
+    <a href="{% url 'signup' %}"><button type="button">Sign Up</button></a>
+    <a href="{% url 'login' %}"><button type="button">Login</button></a>
   </div>
 {% endblock %}
 
