@@ -24,9 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('test/', views.test, name='test'),
-    # path('<str:character>/', views.character, name='character'),
+    path('character/<str:character>/', views.character, name='character'),
 
-    path('login/', auth_views.LoginView, name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='wanikani/login.html'), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
 ]

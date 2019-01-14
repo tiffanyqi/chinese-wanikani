@@ -10,16 +10,18 @@ from wanikani.models import BaseCharacter, User
 
 
 def index(request):
+    print(request.user.is_authenticated)
     try:
         user = User.objects.get(email=request.user.email)
         context = {
             'characters': BaseCharacter.objects.filter(user_level=user.level),
             'user': user,
         }
-        return render(request, 'wanikani/index.html', context)
-    except User.DoesNotExist:
+        return render(request, 'wanikani/dashboard.html', context)
+    except AttributeError:
         return render(request, 'wanikani/index_logged_out.html')
 
+@login_required
 def character(request, character):
     base_character = BaseCharacter.objects.get(character=character)
     context = {
@@ -27,13 +29,18 @@ def character(request, character):
     }
     return render(request, 'wanikani/character.html', context)
 
+@login_required
 def test(request):
     return render(request, 'wanikani/test.html')
+
+def login_view(request):
+    log_in(request)
+    return HttpResponseRedirect('/')
 
 @login_required
 def logout_view(request):
     logout(request)
-    return render(request, 'wanikani/index_logged_out.html')
+    return HttpResponseRedirect('/')
 
 def signup(request):
     if request.method == 'POST':

@@ -16,6 +16,11 @@
 
   <body>
     <div class="wrapper">
+      <div class="navigation">
+          <a href="{% url 'index' %}">Home</a>
+          <a href="{% url 'test' %}">Review</a>
+          <a href="{% url 'logout' %}">Logout</a>
+      </div>
       {% block content %}
           {% load static %}
       {% endblock %}
