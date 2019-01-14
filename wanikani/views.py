@@ -13,11 +13,11 @@ def index(request):
     try:
         user = User.objects.get(email=request.user.email)
         context = {
-            'characters': BaseCharacter.objects.filter(user_level=1),
+            'characters': BaseCharacter.objects.filter(user_level=user.level),
             'user': user,
         }
         return render(request, 'wanikani/index.html', context)
-    except:
+    except User.DoesNotExist:
         return render(request, 'wanikani/index_logged_out.html')
 
 def character(request, character):
@@ -44,6 +44,13 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
+            user_object = User.objects.create(
+                username=username,
+                password=raw_password,
+                email=form.cleaned_data.get('email'),
+                level=1,
+            )
+            user_object.save()
             log_in(request, user)
             return HttpResponseRedirect('/')
 

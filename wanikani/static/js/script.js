@@ -49,7 +49,9 @@ function clearFields() {
   $('#results').text(function() {
     return '';
   });
-  document.getElementById('userInput').value = '';
+  if (document.getElementById('userInput')) {
+    document.getElementById('userInput').value = '';
+  }
 }
 
 /* Helper functions */
