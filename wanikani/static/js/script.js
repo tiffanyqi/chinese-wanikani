@@ -1,20 +1,13 @@
-$(document).ready(function() {
-  loadRandomCharacter();
-});
-
 /* User input functions */
 
-function loadRandomCharacter() {
-  const url = 'http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string';
-  $.getJSON(url, function(data) {
-    window.character = getRandomCharacter(data);
-    $('#character').text(function() {
-      return window.character.string;
-    });
-    window.type = getType();
-    $('#type').text(function() {
-      return `${window.type}:`;
-    });
+function loadRandomCharacter(characters) {
+  window.character = getRandomCharacter(characters);
+  $('#character').text(function() {
+    return window.character.string;
+  });
+  window.type = getType();
+  $('#type').text(function() {
+    return `${window.type}:`;
   });
   clearFields();
   return false;

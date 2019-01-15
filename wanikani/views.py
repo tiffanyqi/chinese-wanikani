@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as log_in
 from django.contrib.auth import logout
@@ -10,7 +12,9 @@ from wanikani.models import BaseCharacter, User
 
 
 def index(request):
-    print(request.user.is_authenticated)
+    """
+    Displays the user's dashboard or the logged out page
+    """
     try:
         user = User.objects.get(email=request.user.email)
         context = {
@@ -23,6 +27,9 @@ def index(request):
 
 @login_required
 def character(request, character):
+    """
+    Individual character page
+    """
     base_character = BaseCharacter.objects.get(character=character)
     context = {
         'character': base_character,
@@ -31,21 +38,22 @@ def character(request, character):
 
 @login_required
 def test(request):
-    return render(request, 'wanikani/test.html')
+    """
+    Test a user's ability
+    """
+    user = User.objects.get(email=request.user.email)
+    characters = (BaseCharacter.objects.filter(user_level=user.level)
+        .values('character', 'definitions', 'pinyin'))
+    context = {
+        'characters': json.dumps(list(characters)),
+    }
+    return render(request, 'wanikani/test.html', context)
 
-def login_view(request):
-    log_in(request)
-    return HttpResponseRedirect('/')
-
-@login_required
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect('/')
+# Authentication #
 
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -65,3 +73,12 @@ def signup(request):
         form = SignUpForm()
 
     return render(request, 'wanikani/signup.html', {'form': form})
+
+def login_view(request):
+    log_in(request)
+    return HttpResponseRedirect('/')
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/')

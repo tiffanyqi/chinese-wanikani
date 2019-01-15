@@ -30,6 +30,7 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - settings page
 - signup/login page
 - make it look nice
+- make an API call to the DB whenever user gets something wrong or right
 
 ## Learning system
 - Apprentice/Guru/Master/Burned

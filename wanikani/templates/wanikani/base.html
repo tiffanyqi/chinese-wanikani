@@ -22,9 +22,12 @@
           <a href="{% url 'logout' %}">Logout</a>
       </div>
       {% block content %}
-          {% load static %}
+        {% load static %}
       {% endblock %}
     </div>
     <footer class="footer"></footer>
+    {% block bottom_js %}
+      {% load static %}
+    {% endblock %}
   </body>
 </html>
