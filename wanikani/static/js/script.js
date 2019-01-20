@@ -1,6 +1,7 @@
 /* User input functions */
 
 function loadRandomCharacter(characters) {
+  // $.getJSON('https://characters', function(data) {
   window.character = getRandomCharacter(characters);
   $('#character').text(function() {
     return window.character.string;
@@ -14,6 +15,9 @@ function loadRandomCharacter(characters) {
 }
 
 function validate() {
+  fetch('GET', '/wanikani/characters_list')
+    .then(resp => resp.json())
+    .then(resp => console.log(resp));
   const {character, type} = window;
   const userInput = $('#userInput').val();
   const results = isUserCorrect(userInput, type, character) ? `you're right!` : `you're not right`;

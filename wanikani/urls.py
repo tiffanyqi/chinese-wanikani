@@ -26,6 +26,7 @@ urlpatterns = [
     path('test/', views.test, name='test'),
     path('characters/', views.characters, name='characters'),
     path('character/<str:character>/', views.character, name='character'),
+    path('characters_list/', views.test_characters, name='test_characters'),
 
     path('login/', auth_views.LoginView.as_view(template_name='wanikani/login.html'), name='login'),
     path('logout/', views.logout_view, name='logout'),

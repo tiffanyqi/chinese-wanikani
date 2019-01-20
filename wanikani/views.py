@@ -4,11 +4,13 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as log_in
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.core.serializers import serialize
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from wanikani.forms import SignUpForm
-from wanikani.models import BaseCharacter, User
+from wanikani.models import BaseCharacter, LevelCharacter, User
 
 
 def index(request):
@@ -76,6 +78,7 @@ def signup(request):
                 level=1,
             )
             user_object.save()
+            # create level character objects
             log_in(request, user)
             return HttpResponseRedirect('/')
 
@@ -92,3 +95,32 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def get_tested_characters(user):
+    return BaseCharacter.objects.filter(
+        user=user,
+        user_level=user.level,
+    ).order_by('user_level')
+
+# API #
+@require_http_methods(['GET'])
+def test_characters(request):
+    if request.method == 'GET':
+        return JsonResponse(serialize('json', get_tested_characters(request.user)))
+
+@login_required
+def update_level_character(request, character, character_type, increment_num_shown, results):
+    try:
+        level_character = LevelCharacter.objects.get(character=character, user=request.user)
+        if results == 'correct':
+            if character_type == 'pinyin':
+                level_character.num_correct_pinyin = level_character.num_correct_pinyin + 1
+            elif character_type == 'definition':
+                level_character.num_correct_definitions = level_character.num_correct_definitions + 1
+            if increment_num_shown:
+                level_character.num_correct_all = level_character.num_correct_all + 1
+        if increment_num_shown:
+            level_character.num_times_shown = level_character.num_times_shown + 1
+        level_character.save()
+    except LevelCharacter.DoesNotExist:
+        raise 'Character does not exist.'
