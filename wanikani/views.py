@@ -26,6 +26,16 @@ def index(request):
         return render(request, 'wanikani/index_logged_out.html')
 
 @login_required
+def characters(request):
+    """
+    All characters page
+    """
+    context = {
+        'characters': list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level')),
+    }
+    return render(request, 'wanikani/characters.html', context)
+
+@login_required
 def character(request, character):
     """
     Individual character page

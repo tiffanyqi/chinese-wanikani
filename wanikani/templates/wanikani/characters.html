@@ -1,0 +1,19 @@
+{% extends "wanikani/base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Characters</h1>
+    {% for character in characters %}
+      {{ character.character }}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block bottom %}
+  {{ block.super }}
+{% endblock %}
