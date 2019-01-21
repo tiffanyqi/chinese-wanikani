@@ -96,17 +96,17 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def get_tested_characters(user):
-    return BaseCharacter.objects.filter(
-        user=user,
-        user_level=user.level,
+def get_tested_characters():
+    results = BaseCharacter.objects.filter(
+        user_level=1, # test
     ).order_by('user_level')
+    return [model.to_json() for model in results]
 
 # API #
 @require_http_methods(['GET'])
 def test_characters(request):
     if request.method == 'GET':
-        return JsonResponse(serialize('json', get_tested_characters(request.user)))
+        return JsonResponse(get_tested_characters(), safe=False)
 
 @login_required
 def update_level_character(request, character, character_type, increment_num_shown, results):
@@ -115,7 +115,7 @@ def update_level_character(request, character, character_type, increment_num_sho
         if results == 'correct':
             if character_type == 'pinyin':
                 level_character.num_correct_pinyin = level_character.num_correct_pinyin + 1
-            elif character_type == 'definition':
+            elif character_type == 'definitions':
                 level_character.num_correct_definitions = level_character.num_correct_definitions + 1
             if increment_num_shown:
                 level_character.num_correct_all = level_character.num_correct_all + 1
