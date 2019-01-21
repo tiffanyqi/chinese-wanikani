@@ -96,9 +96,10 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def get_tested_characters():
+def get_tested_characters(user):
+    user = User.objects.get(email=user.email)
     results = BaseCharacter.objects.filter(
-        user_level=1, # test
+        user_level=user.level,
     ).order_by('user_level')
     return [model.to_json() for model in results]
 
@@ -106,4 +107,4 @@ def get_tested_characters():
 @require_http_methods(['GET'])
 def test_characters(request):
     if request.method == 'GET':
-        return JsonResponse(get_tested_characters(), safe=False)
+        return JsonResponse(get_tested_characters(request.user), safe=False)
