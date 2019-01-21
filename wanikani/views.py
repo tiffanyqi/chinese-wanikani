@@ -4,11 +4,13 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as log_in
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.core.serializers import serialize
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from wanikani.forms import SignUpForm
-from wanikani.models import BaseCharacter, User
+from wanikani.models import BaseCharacter, LevelCharacter, User
 
 
 def index(request):
@@ -76,6 +78,7 @@ def signup(request):
                 level=1,
             )
             user_object.save()
+            # create level character objects
             log_in(request, user)
             return HttpResponseRedirect('/')
 
@@ -92,3 +95,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def get_tested_characters():
+    results = BaseCharacter.objects.filter(
+        user_level=1, # test
+    ).order_by('user_level')
+    return [model.to_json() for model in results]
+
+# API #
+@require_http_methods(['GET'])
+def test_characters(request):
+    if request.method == 'GET':
+        return JsonResponse(get_tested_characters(), safe=False)

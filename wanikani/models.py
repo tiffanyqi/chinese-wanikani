@@ -37,6 +37,9 @@ class BaseCharacter(models.Model):
     frequency = models.IntegerField(default=0)
     user_level = models.IntegerField(default=0)
 
+    def to_json(self):
+        keys = ['character', 'definitions', 'pinyin', 'user_level']
+        return {key: getattr(self, key) for key in keys}
 
 class LevelCharacter(models.Model):
     character = models.ForeignKey(BaseCharacter, on_delete=models.CASCADE)

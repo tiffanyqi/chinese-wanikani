@@ -1,15 +1,22 @@
 /* User input functions */
+$(document).ready(function() {
+  loadRandomCharacter();
+});
 
-function loadRandomCharacter(characters) {
-  window.character = getRandomCharacter(characters);
-  $('#character').text(function() {
-    return window.character.string;
-  });
-  window.type = getType();
-  $('#type').text(function() {
-    return `${window.type}:`;
-  });
-  clearFields();
+function loadRandomCharacter() {
+  callData('GET', '/characters_list')
+    .then(result => result.json())
+    .then(result => {
+      window.character = getRandomCharacter(result);
+      $('#tested-character').text(function() {
+        return window.character.character;
+      });
+      window.type = getType();
+      $('#type').text(function() {
+        return `${window.type}:`;
+      });
+      clearFields();
+    });
   return false;
 }
 
@@ -67,7 +74,7 @@ function getType() {
 }
 
 function getKey(type) {
-  return isDefinition(type) ? 'kDefinition' : 'kMandarin';
+  return isDefinition(type) ? 'definitions' : 'pinyin';
 }
 
 function isDefinition(type) {
@@ -84,4 +91,16 @@ function isUserCorrect(userInput, type, character) {
     result = true;
   }
   return result;
+}
+
+/* AUTH */
+function callData(method, url, data={}) {
+  return fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    method,
+    credentials: 'include',
+  });
 }
