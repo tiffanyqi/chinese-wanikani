@@ -107,20 +107,3 @@ def get_tested_characters():
 def test_characters(request):
     if request.method == 'GET':
         return JsonResponse(get_tested_characters(), safe=False)
-
-@login_required
-def update_level_character(request, character, character_type, increment_num_shown, results):
-    try:
-        level_character = LevelCharacter.objects.get(character=character, user=request.user)
-        if results == 'correct':
-            if character_type == 'pinyin':
-                level_character.num_correct_pinyin = level_character.num_correct_pinyin + 1
-            elif character_type == 'definitions':
-                level_character.num_correct_definitions = level_character.num_correct_definitions + 1
-            if increment_num_shown:
-                level_character.num_correct_all = level_character.num_correct_all + 1
-        if increment_num_shown:
-            level_character.num_times_shown = level_character.num_times_shown + 1
-        level_character.save()
-    except LevelCharacter.DoesNotExist:
-        raise 'Character does not exist.'
