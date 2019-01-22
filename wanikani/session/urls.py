@@ -3,5 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('characters_list/', views.test_characters, name='test_characters'),
+    path('current_level_characters_list/', views.get_user_level_characters, name='current_level_characters_list'),
 ]

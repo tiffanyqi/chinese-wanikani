@@ -30,6 +30,10 @@ class Session(models.Model):
 
 
 class BaseCharacter(models.Model):
+    """
+    Character that contains information about the character, such as
+    definitions and pinyin.
+    """
     character = models.CharField(null=True, max_length=50)
     definitions = JSONField()
     pinyin = JSONField()
@@ -41,10 +45,14 @@ class BaseCharacter(models.Model):
         keys = ['character', 'definitions', 'pinyin', 'user_level']
         return {key: getattr(self, key) for key in keys}
 
-class LevelCharacter(models.Model):
+class ProgressCharacter(models.Model):
+    """
+    Character that contains information about the character in relation
+    to the user's progress, such as the number of correct responses and
+    the latest session date.
+    """
     character = models.ForeignKey(BaseCharacter, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    unlocked = models.BooleanField(default=False)
     num_correct_pinyin = models.IntegerField(default=0)
     num_correct_definitions = models.IntegerField(default=0)
     num_correct_all = models.IntegerField(default=0)

@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from wanikani.models import BaseCharacter, LevelCharacter, User
+from wanikani.models import BaseCharacter, User
 
 
 def index(request):
@@ -46,6 +46,6 @@ def character(request, character):
 @login_required
 def session(request):
     """
-    Begin a session of either a lesson or a review.
+    Begins a session of either a lesson or a review.
     """
     return render(request, 'wanikani/session.html')

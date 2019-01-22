@@ -6,18 +6,15 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from wanikani.models import BaseCharacter, LevelCharacter, User
+from wanikani.models import BaseCharacter, User
 
 
-def get_tested_characters(user):
-    user = User.objects.get(email=user.email)
-    results = BaseCharacter.objects.filter(
-        user_level=user.level,
-    ).order_by('user_level')
-    return [model.to_json() for model in results]
-
-# API #
 @require_http_methods(['GET'])
-def test_characters(request):
+def get_user_level_characters(request):
     if request.method == 'GET':
-        return JsonResponse(get_tested_characters(request.user), safe=False)
+        return JsonResponse(user_level_characters(request.user), safe=False)
+
+def user_level_characters(user):
+    user = User.objects.get(email=user.email)
+    results = BaseCharacter.objects.filter(user_level=user.level).order_by('user_level')
+    return [model.to_json() for model in results]
