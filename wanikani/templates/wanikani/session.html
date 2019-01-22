@@ -1,22 +1,23 @@
 {% extends "wanikani/base.html" %}
 {% load staticfiles %}
 
-{% block head %}
+{% block head_js %}
   {{ block.super }}
+  <script type="module" src="{% static "js/session/index.js" %}"></script>
 {% endblock %}
 
 {% block content %}
   <div class="container">
-    <div id="tested-character"></div>
+    <div id="session-character-displayed"></div>
     <form>
-      <div id="type"></div>
-      <input type="text" id="userInput"><br>
-      <input type="submit" value="Submit" onclick="return validate()">
-      <input type="submit" value="I don't know" onclick="return displayAnswer()">
-      <input type="submit" value="Get another character" onclick="return loadRandomCharacter()">
+      <div id="session-character-type"></div>
+      <input type="text" id="session-character-input"><br>
+      <input id="session-character-submit" type="submit" value="Submit">
+      <input id="session-character-get-answer" type="submit" value="I don't know">
+      <input id="session-character-get-new-character" type="submit" value="Get another character">
     </form>
-    <div id="results"></div>
-    <div id="answer"></div>
+    <div id="session-character-results"></div>
+    <div id="session-character-answer"></div>
   </div>
 {% endblock %}
 
