@@ -15,8 +15,8 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.urls import include, path
 
 from . import views
 
@@ -27,8 +27,5 @@ urlpatterns = [
     path('characters/', views.characters, name='characters'),
     path('character/<str:character>/', views.character, name='character'),
     path('characters_list/', views.test_characters, name='test_characters'),
-
-    path('login/', auth_views.LoginView.as_view(template_name='wanikani/login.html'), name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('signup/', views.signup, name='signup'),
+    path('registration/', include('wanikani.registration.urls')),
 ]

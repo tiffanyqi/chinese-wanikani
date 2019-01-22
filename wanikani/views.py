@@ -1,15 +1,11 @@
 import json
 
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as log_in
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from wanikani.forms import SignUpForm
 from wanikani.models import BaseCharacter, LevelCharacter, User
 
 
@@ -60,41 +56,6 @@ def test(request):
         'characters': json.dumps(list(characters)),
     }
     return render(request, 'wanikani/test.html', context)
-
-# Authentication #
-
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            user_object = User.objects.create(
-                username=username,
-                password=raw_password,
-                email=form.cleaned_data.get('email'),
-                level=1,
-            )
-            user_object.save()
-            # create level character objects
-            log_in(request, user)
-            return HttpResponseRedirect('/')
-
-    else:
-        form = SignUpForm()
-
-    return render(request, 'wanikani/signup.html', {'form': form})
-
-def login_view(request):
-    log_in(request)
-    return HttpResponseRedirect('/')
-
-@login_required
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect('/')
 
 def get_tested_characters(user):
     user = User.objects.get(email=user.email)
