@@ -21,12 +21,12 @@ def index(request):
         }
         return render(request, 'wanikani/dashboard.html', context)
     except AttributeError:
-        return render(request, 'wanikani/index_logged_out.html')
+        return render(request, 'wanikani/index.html')
 
 @login_required
 def characters(request):
     """
-    All characters page
+    Displays all characters
     """
     context = {
         'characters': list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level')),
@@ -36,36 +36,16 @@ def characters(request):
 @login_required
 def character(request, character):
     """
-    Individual character page
+    Provides more information on a single character
     """
-    base_character = BaseCharacter.objects.get(character=character)
     context = {
-        'character': base_character,
+        'character': BaseCharacter.objects.get(character=character),
     }
     return render(request, 'wanikani/character.html', context)
 
 @login_required
-def test(request):
+def session(request):
     """
-    Test a user's ability
+    Begin a session of either a lesson or a review.
     """
-    user = User.objects.get(email=request.user.email)
-    characters = (BaseCharacter.objects.filter(user_level=user.level)
-        .values('character', 'definitions', 'pinyin'))
-    context = {
-        'characters': json.dumps(list(characters)),
-    }
-    return render(request, 'wanikani/test.html', context)
-
-def get_tested_characters(user):
-    user = User.objects.get(email=user.email)
-    results = BaseCharacter.objects.filter(
-        user_level=user.level,
-    ).order_by('user_level')
-    return [model.to_json() for model in results]
-
-# API #
-@require_http_methods(['GET'])
-def test_characters(request):
-    if request.method == 'GET':
-        return JsonResponse(get_tested_characters(request.user), safe=False)
+    return render(request, 'wanikani/session.html')

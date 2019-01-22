@@ -4,7 +4,7 @@ $(document).ready(function() {
 });
 
 function loadRandomCharacter() {
-  callData('GET', '/characters_list')
+  callData('GET', 'characters_list')
     .then(result => result.json())
     .then(result => {
       window.character = getRandomCharacter(result);
