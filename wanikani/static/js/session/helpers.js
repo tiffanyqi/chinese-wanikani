@@ -25,10 +25,11 @@ function isDefinition(type) {
 export function isUserCorrect(userInput, type, character) {
   const key = getKey(type);
   const possibleCorrectAnswers = isDefinition(type) ? character[key].split(/[,;]\s+/) : character[key].split(' ');
+  const listOfAnswers = JSON.parse(possibleCorrectAnswers);
   let result = false;
-  if (possibleCorrectAnswers.includes(userInput)) {
+  if (listOfAnswers.includes(userInput)) {
     result = true;
-  } else if (possibleCorrectAnswers.includes(userInput.toUpperCase())) {
+  } else if (listOfAnswers.includes(userInput.toUpperCase())) {
     result = true;
   }
   return result;
