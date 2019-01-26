@@ -20,7 +20,7 @@ def index(request):
             'user': user,
         }
         return render(request, 'wanikani/dashboard.html', context)
-    except AttributeError:
+    except User.DoesNotExist:
         return render(request, 'wanikani/index.html')
 
 @login_required
