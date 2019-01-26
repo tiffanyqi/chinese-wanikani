@@ -14,7 +14,7 @@ def index(request):
     Displays the user's dashboard or the logged out page
     """
     try:
-        user = User.objects.get(email=request.user.email)
+        user = User.objects.get(email=request.user.email, username=request.user.username)
         context = {
             'characters': BaseCharacter.objects.filter(user_level=user.level),
             'user': user,

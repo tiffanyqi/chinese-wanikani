@@ -1,6 +1,6 @@
 import datetime
 
-from wanikani.models import BaseCharacter, ProgressCharacter, User
+from wanikani.models import BaseCharacter, ProgressCharacter, Session, User
 
 
 def save_user(username, password, email):
@@ -17,13 +17,15 @@ def save_user(username, password, email):
     return user_object
 
 
-def setup_characters(level):
+def setup_characters(user):
     """
     Creates a set of characters directly related to the user's progress
     """
-    characters = BaseCharacter.objects.filter(user_level=level)
+    characters = BaseCharacter.objects.filter(user_level=user.level)
+    now = datetime.datetime.now()
     for character in characters:
         ProgressCharacter.objects.create(
+            user=user,
             character=character,
-            unlocked_date=datetime.datetime.now()
+            unlocked_date=now,
         ).save()

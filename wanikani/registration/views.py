@@ -23,7 +23,7 @@ def signup(request):
 
             user = authenticate(username=username, password=password)
             user_object = save_user(username, password, email)
-            setup_characters(user_object.level)
+            setup_characters(user_object)
             log_in(request, user)
             return HttpResponseRedirect('/')
 
