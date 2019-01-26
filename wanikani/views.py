@@ -1,16 +1,12 @@
 import json
 
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as log_in
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from wanikani.forms import SignUpForm
-from wanikani.models import BaseCharacter, LevelCharacter, User
+from wanikani.models import BaseCharacter, User
 
 
 def index(request):
@@ -18,19 +14,19 @@ def index(request):
     Displays the user's dashboard or the logged out page
     """
     try:
-        user = User.objects.get(email=request.user.email)
+        user = User.objects.get(username=request.user.username)
         context = {
             'characters': BaseCharacter.objects.filter(user_level=user.level),
             'user': user,
         }
         return render(request, 'wanikani/dashboard.html', context)
     except AttributeError:
-        return render(request, 'wanikani/index_logged_out.html')
+        return render(request, 'wanikani/index.html')
 
 @login_required
 def characters(request):
     """
-    All characters page
+    Displays all characters
     """
     context = {
         'characters': list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level')),
@@ -40,71 +36,16 @@ def characters(request):
 @login_required
 def character(request, character):
     """
-    Individual character page
+    Provides more information on a single character
     """
-    base_character = BaseCharacter.objects.get(character=character)
     context = {
-        'character': base_character,
+        'character': BaseCharacter.objects.get(character=character),
     }
     return render(request, 'wanikani/character.html', context)
 
 @login_required
-def test(request):
+def session(request):
     """
-    Test a user's ability
+    Begins a session of either a lesson or a review.
     """
-    user = User.objects.get(email=request.user.email)
-    characters = (BaseCharacter.objects.filter(user_level=user.level)
-        .values('character', 'definitions', 'pinyin'))
-    context = {
-        'characters': json.dumps(list(characters)),
-    }
-    return render(request, 'wanikani/test.html', context)
-
-# Authentication #
-
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            user_object = User.objects.create(
-                username=username,
-                password=raw_password,
-                email=form.cleaned_data.get('email'),
-                level=1,
-            )
-            user_object.save()
-            # create level character objects
-            log_in(request, user)
-            return HttpResponseRedirect('/')
-
-    else:
-        form = SignUpForm()
-
-    return render(request, 'wanikani/signup.html', {'form': form})
-
-def login_view(request):
-    log_in(request)
-    return HttpResponseRedirect('/')
-
-@login_required
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect('/')
-
-def get_tested_characters(user):
-    user = User.objects.get(email=user.email)
-    results = BaseCharacter.objects.filter(
-        user_level=user.level,
-    ).order_by('user_level')
-    return [model.to_json() for model in results]
-
-# API #
-@require_http_methods(['GET'])
-def test_characters(request):
-    if request.method == 'GET':
-        return JsonResponse(get_tested_characters(request.user), safe=False)
+    return render(request, 'wanikani/session.html')

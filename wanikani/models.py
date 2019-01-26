@@ -17,6 +17,7 @@ class User(AbstractBaseUser):
     date_joined = models.DateTimeField(default=timezone.now)
 
 
+# Currently not being used
 class Session(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_started = models.DateTimeField(default=timezone.now)
@@ -30,6 +31,10 @@ class Session(models.Model):
 
 
 class BaseCharacter(models.Model):
+    """
+    Character that contains information about the character, such as
+    definitions and pinyin.
+    """
     character = models.CharField(null=True, max_length=50)
     definitions = JSONField()
     pinyin = JSONField()
@@ -41,15 +46,28 @@ class BaseCharacter(models.Model):
         keys = ['character', 'definitions', 'pinyin', 'user_level']
         return {key: getattr(self, key) for key in keys}
 
-class LevelCharacter(models.Model):
+
+class ProgressCharacter(models.Model):
+    """
+    Character that contains information about the character in relation
+    to the user's progress, such as the number of correct responses and
+    the latest session date.
+    """
     character = models.ForeignKey(BaseCharacter, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    unlocked = models.BooleanField(default=False)
     num_correct_pinyin = models.IntegerField(default=0)
     num_correct_definitions = models.IntegerField(default=0)
     num_correct_all = models.IntegerField(default=0)
     num_times_shown = models.IntegerField(default=0)
     unlocked_date = models.DateTimeField(default=None, null=False)
-    upcoming_review_date = models.DateTimeField(default=None, null=False)
-    last_reviewed_date = models.DateTimeField(default=None, null=False)
-    last_session = models.ForeignKey(Session, on_delete=models.SET_NULL, null=True)
+    upcoming_review_date = models.DateTimeField(default=None, null=True)
+    last_reviewed_date = models.DateTimeField(default=None, null=True)
+    last_session = models.IntegerField(default=0)
+
+    def to_json(self):
+        character_keys = ['character', 'definitions', 'pinyin', 'user_level']
+        keys = ['num_correct_pinyin', 'num_correct_definitions', 'num_correct_all', 'unlocked_date', 'upcoming_review_date', 'last_reviewed_date']
+        attributes = {key: getattr(self, key) for key in keys}
+        for key in character_keys:
+            attributes[key] = getattr(self.character, key)
+        return attributes
