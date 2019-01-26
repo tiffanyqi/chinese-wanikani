@@ -17,6 +17,7 @@ class User(AbstractBaseUser):
     date_joined = models.DateTimeField(default=timezone.now)
 
 
+# Currently not being used
 class Session(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_started = models.DateTimeField(default=timezone.now)
@@ -45,6 +46,7 @@ class BaseCharacter(models.Model):
         keys = ['character', 'definitions', 'pinyin', 'user_level']
         return {key: getattr(self, key) for key in keys}
 
+
 class ProgressCharacter(models.Model):
     """
     Character that contains information about the character in relation
@@ -61,3 +63,11 @@ class ProgressCharacter(models.Model):
     upcoming_review_date = models.DateTimeField(default=None, null=True)
     last_reviewed_date = models.DateTimeField(default=None, null=True)
     last_session = models.IntegerField(default=0)
+
+    def to_json(self):
+        character_keys = ['character', 'definitions', 'pinyin', 'user_level']
+        keys = ['num_correct_pinyin', 'num_correct_definitions', 'num_correct_all', 'unlocked_date', 'upcoming_review_date', 'last_reviewed_date']
+        attributes = {key: getattr(self, key) for key in keys}
+        for key in character_keys:
+            attributes[key] = getattr(self.character, key)
+        return attributes
