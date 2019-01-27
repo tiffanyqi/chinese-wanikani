@@ -62,11 +62,12 @@ class ProgressCharacter(models.Model):
     unlocked_date = models.DateTimeField(default=None, null=False)
     upcoming_review_date = models.DateTimeField(default=None, null=True)
     last_reviewed_date = models.DateTimeField(default=None, null=True)
+    level = models.IntegerField(default=1, null=False)
     last_session = models.IntegerField(default=0)
 
     def to_json(self):
         character_keys = ['character', 'definitions', 'pinyin', 'user_level']
-        keys = ['num_correct_pinyin', 'num_correct_definitions', 'num_correct_all', 'unlocked_date', 'upcoming_review_date', 'last_reviewed_date']
+        keys = ['num_correct_pinyin', 'num_correct_definitions', 'num_correct_all', 'unlocked_date', 'upcoming_review_date', 'last_reviewed_date', 'level']
         attributes = {key: getattr(self, key) for key in keys}
         for key in character_keys:
             attributes[key] = getattr(self.character, key)

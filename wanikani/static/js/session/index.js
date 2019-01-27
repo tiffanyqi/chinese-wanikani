@@ -3,10 +3,13 @@ import {getKey, getRandomCharacter, getType, isUserCorrect} from './helpers.js';
 
 
 $(document).ready(function() {
+  // move get data function here
+  // change random character so that it's more separated and doesn't include duplicates
   loadRandomCharacter();
   $('#session-character-submit').click(validate);
   $('#session-character-get-answer').click(displayAnswer);
   $('#session-character-get-new-character').click(loadRandomCharacter);
+  window.session = {};
 });
 
 function loadRandomCharacter() {
@@ -25,8 +28,17 @@ function loadRandomCharacter() {
 function validate() {
   const {character, type} = window;
   const userInput = $('#session-character-input').val();
-  const results = isUserCorrect(userInput, type, character) ? `you're right!` : `you're not right`;
+  const isCorrect = isUserCorrect(userInput, type, character);
+  const results = isCorrect ? `you're right!` : `you're not right`;
+  window.session[character][type] = isCorrect;
+  const isComplete = window.session[character].values().length == 2;
   $('#session-character-results').text(() => results);
+  postData('POST', 'post_updated_character', {
+    character,
+    isComplete,
+    isCorrect,
+    type,
+  });
   return false;
 }
 
