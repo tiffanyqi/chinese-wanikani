@@ -66,7 +66,13 @@ class ProgressCharacter(models.Model):
 
     def to_json(self):
         character_keys = ['character', 'definitions', 'pinyin', 'user_level']
-        keys = ['num_correct', 'num_correct', 'num_current_incorrect', 'unlocked_date', 'upcoming_review_date', 'last_reviewed_date', 'level']
+        keys = ['num_correct',
+                'num_current_incorrect',
+                'num_times_shown',
+                'unlocked_date',
+                'upcoming_review_date',
+                'last_reviewed_date',
+                'level']
         attributes = {key: getattr(self, key) for key in keys}
         for key in character_keys:
             attributes[key] = getattr(self.character, key)
