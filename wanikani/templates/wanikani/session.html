@@ -9,7 +9,7 @@
 {% block content %}
   <div class="container">
     <div id="session-character-displayed"></div>
-    <form>
+    <form>{% csrf_token %}
       <div id="session-character-type"></div>
       <input type="text" id="session-character-input"><br>
       <input id="session-character-submit" type="submit" value="Submit">
