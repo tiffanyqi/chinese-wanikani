@@ -28,10 +28,10 @@ def post_updated_character(request):
     print(request)
     if request.method == 'POST':
         return JsonResponse(update_character(
-            request.POST.get('both_correct'),
+            json.loads(request.POST.get('both_correct')),
             request.POST.get('character'),
-            request.POST.get('is_complete'),
-            request.POST.get('is_correct'),
+            json.loads(request.POST.get('is_complete')),
+            json.loads(request.POST.get('is_correct')),
             request.POST.get('type'),
             request.user,
         ), safe=False)

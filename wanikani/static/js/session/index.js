@@ -55,7 +55,7 @@ function validate() {
     character: character_string,
     is_complete: isComplete,
     is_correct: isCorrect,
-    type,
+    type: getKey(type),
     'csrfmiddlewaretoken': getCookie('csrftoken'),
   });
   return false;
