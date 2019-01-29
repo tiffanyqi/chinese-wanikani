@@ -1,4 +1,4 @@
-import {getData, postData} from '../util.js';
+import {getCookie, getData} from '../util.js';
 import {
   getKey,
   getRandomCharacter,
@@ -48,14 +48,15 @@ function validate() {
     session[character_string]['incorrect'] = true;
   }
   const isComplete = isWordComplete(session[character_string]);
-  const areBothCorrect = isComplete && !session[character_string]['incorrect'];
+  const areBothCorrect = !!(isComplete && !session[character_string]['incorrect']);
   $('#session-character-results').text(() => results);
-  postData('POST', 'post_updated_character', {
+  $.post('post_updated_character', {
     both_correct: areBothCorrect,
     character: character_string,
     is_complete: isComplete,
     is_correct: isCorrect,
     type,
+    'csrfmiddlewaretoken': getCookie('csrftoken'),
   });
   return false;
 }

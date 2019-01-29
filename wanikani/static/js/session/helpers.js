@@ -37,5 +37,5 @@ export function isUserCorrect(userInput, type, character) {
 }
 
 export function isWordComplete(character_object) {
-  return character_object[CHARACTER_FIELDS.pinyin] && character_object[CHARACTER_FIELDS.definitions];
+  return !!(character_object[CHARACTER_FIELDS.pinyin] && character_object[CHARACTER_FIELDS.definitions]);
 }

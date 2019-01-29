@@ -24,11 +24,19 @@ def user_level_characters(user):
 
 
 @require_http_methods(['POST'])
-def post_updated_character(request, data):
+def post_updated_character(request):
+    print(request)
     if request.method == 'POST':
-        return JsonResponse(update_character(request.user, data), safe=False)
+        return JsonResponse(update_character(
+            request.POST.get('both_correct'),
+            request.POST.get('character'),
+            request.POST.get('is_complete'),
+            request.POST.get('is_correct'),
+            request.POST.get('type'),
+            request.user,
+        ), safe=False)
 
-def update_character(user, data):
+def update_character(both_correct, character, is_complete, is_correct, type, user):
     """
     Updates the character whether the user got the question right or wrong.
 
@@ -40,17 +48,18 @@ def update_character(user, data):
     :type - whether the input is for pinyin or definition
     """
     now = datetime.datetime.now()
-    base_character = BaseCharacter.objects.get(character=data.get('character'))
-    character_object = ProgressCharacter.objects.get(character=base_character, user=user)
-    if data.get('is_complete'):
+    base_character = BaseCharacter.objects.get(character=character)
+    user_object = User.objects.get(username=user.username)
+    character_object = ProgressCharacter.objects.get(character=base_character, user=user_object)
+    if is_complete:
         character_object.num_times_shown += 1
 
-    if data.get('is_correct'):
-        character_object.num_correct[data.get('type')] += 1
+    if is_correct:
+        character_object.num_correct[type] += 1
     else:
-        character_object.num_current_incorrect[data.get('type')] += 1
+        character_object.num_current_incorrect[type] += 1
 
-    if data.get('both_correct'):
+    if both_correct:
         new_level = get_level(character_object)
         character_object.num_correct['all'] += 1
         character_object.last_reviewed_date = now
