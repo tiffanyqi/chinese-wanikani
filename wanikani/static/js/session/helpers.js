@@ -2,6 +2,7 @@ import {CHARACTER_FIELDS, TEST_OPTIONS} from './constants.js';
 import {getRandomNumber} from '../util.js';
 
 export function getRandomCharacter(data) {
+  // TODO: ensure there are no duplicates but each number appears twice for P/D
   const max = data.length;
   const randomNumber = getRandomNumber(max);
   const character = data[randomNumber];
@@ -33,4 +34,8 @@ export function isUserCorrect(userInput, type, character) {
     result = true;
   }
   return result;
+}
+
+export function isWordComplete(character_object) {
+  return !!(character_object[CHARACTER_FIELDS.pinyin] && character_object[CHARACTER_FIELDS.definitions]);
 }

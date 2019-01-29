@@ -1,32 +1,63 @@
-import {getData} from '../util.js';
-import {getKey, getRandomCharacter, getType, isUserCorrect} from './helpers.js';
+import {getCookie, getData} from '../util.js';
+import {
+  getKey,
+  getRandomCharacter,
+  getType,
+  isUserCorrect,
+  isWordComplete,
+} from './helpers.js';
 
 
 $(document).ready(function() {
-  loadRandomCharacter();
+  window.session = {};
   $('#session-character-submit').click(validate);
   $('#session-character-get-answer').click(displayAnswer);
   $('#session-character-get-new-character').click(loadRandomCharacter);
-});
 
-function loadRandomCharacter() {
   getData('GET', 'current_level_characters_list')
     .then(result => result.json())
     .then(result => {
-      window.character = getRandomCharacter(result);
-      $('#session-character-displayed').text(() => window.character.character);
-      window.type = getType();
-      $('#session-character-type').text(() => `${window.type}:`);
-      clearFields();
+      window.characters = result;
+      loadRandomCharacter();
     });
+});
+
+function loadRandomCharacter() {
+  window.character = getRandomCharacter(window.characters);
+  window.type = getType();
+  const {session, type} = window;
+  const character = window.character.character;
+  $('#session-character-displayed').text(() => character);
+  $('#session-character-type').text(() => `${type}:`);
+  if (!session[character]) {
+    session[character] = {'incorrect': false};
+  }
+  clearFields();
   return false;
 }
 
 function validate() {
-  const {character, type} = window;
+  const {character, session, type} = window;
   const userInput = $('#session-character-input').val();
-  const results = isUserCorrect(userInput, type, character) ? `you're right!` : `you're not right`;
+  const isCorrect = isUserCorrect(userInput, type, character);
+  const results = isCorrect ? `you're right!` : `you're not right`;
+
+  const character_string = character.character;
+  session[character_string][type] = isCorrect;
+  if (!isCorrect) {
+    session[character_string]['incorrect'] = true;
+  }
+  const isComplete = isWordComplete(session[character_string]);
+  const areBothCorrect = !!(isComplete && !session[character_string]['incorrect']);
   $('#session-character-results').text(() => results);
+  $.post('post_updated_character', {
+    both_correct: areBothCorrect,
+    character: character_string,
+    is_complete: isComplete,
+    is_correct: isCorrect,
+    type: getKey(type),
+    'csrfmiddlewaretoken': getCookie('csrftoken'),
+  });
   return false;
 }
 
