@@ -22,17 +22,21 @@ $(document).ready(function() {
     });
 });
 
-function loadRandomCharacter() {
-  window.character = getRandomCharacter(window.characters);
-  window.type = getType();
-  const {session, type} = window;
-  const character = window.character.character;
-  $('#session-character-displayed').text(() => character);
-  $('#session-character-type').text(() => `${type}:`);
-  if (!session[character]) {
-    session[character] = {'incorrect': false};
+function loadRandomCharacter(ev) {
+  if (ev && ev.currentTarget.className === 'disabled') {
+    ev.stopPropagation();
+  } else {
+    window.character = getRandomCharacter(window.characters);
+    window.type = getType();
+    const {session, type} = window;
+    const character = window.character.character;
+    $('#session-character-displayed').text(() => character);
+    $('#session-character-type').text(() => `${type}:`);
+    if (!session[character]) {
+      session[character] = {'incorrect': false};
+    }
+    clearFields();
   }
-  clearFields();
   return false;
 }
 
@@ -49,7 +53,12 @@ function validate() {
   }
   const isComplete = isWordComplete(session[character_string]);
   const areBothCorrect = !!(isComplete && !session[character_string]['incorrect']);
+
   $('#session-character-results').text(() => results);
+  $('#session-character-submit').addClass('disabled');
+  $('#session-character-get-answer').removeClass('disabled');
+  $('#session-character-get-new-character').removeClass('disabled');
+
   $.post('post_updated_character', {
     both_correct: areBothCorrect,
     character: character_string,
@@ -61,10 +70,14 @@ function validate() {
   return false;
 }
 
-function displayAnswer() {
-  const {character, type} = window;
-  const key = getKey(type);
-  $('#session-character-answer').text(() => character[key]);
+function displayAnswer(ev) {
+  if (ev.currentTarget.className === 'disabled') {
+    ev.stopPropagation();
+  } else {
+    const {character, type} = window;
+    const key = getKey(type);
+    $('#session-character-answer').text(() => character[key]);
+  }
   return false;
 }
 
@@ -72,6 +85,9 @@ function clearFields() {
   $('#session-character-answer').text(() => '');
   $('#session-character').text(() => '');
   $('#session-character-results').text(() => '');
+  $('#session-character-get-answer').addClass('disabled');
+  $('#session-character-get-new-character').addClass('disabled');
+  $('#session-character-submit').removeClass('disabled');
   if (document.getElementById('session-character-input')) {
     document.getElementById('session-character-input').value = '';
   }
