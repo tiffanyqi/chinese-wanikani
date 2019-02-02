@@ -3,6 +3,6 @@ export const TEST_OPTIONS = {
   pinyin: 'pinyin',
 }
 export const CHARACTER_FIELDS = {
-  definitions: 'definitions',
+  definition: 'definitions',
   pinyin: 'pinyin',
 }

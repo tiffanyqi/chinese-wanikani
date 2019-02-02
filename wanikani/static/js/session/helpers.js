@@ -16,7 +16,7 @@ export function getType() {
 }
 
 export function getKey(type) {
-  return isDefinition(type) ? CHARACTER_FIELDS.definitions : CHARACTER_FIELDS.pinyin;
+  return isDefinition(type) ? CHARACTER_FIELDS.definition : CHARACTER_FIELDS.pinyin;
 }
 
 function isDefinition(type) {
@@ -37,5 +37,5 @@ export function isUserCorrect(userInput, type, character) {
 }
 
 export function isWordComplete(character_object) {
-  return !!(character_object[CHARACTER_FIELDS.pinyin] && character_object[CHARACTER_FIELDS.definitions]);
+  return !!(character_object[TEST_OPTIONS.pinyin] && character_object[TEST_OPTIONS.definition]);
 }
