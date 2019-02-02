@@ -6,7 +6,8 @@ from django.shortcuts import render
 
 from wanikani.forms import SignUpForm
 
-from wanikani.registration.util import save_user, setup_characters
+from wanikani.registration.util import save_user
+from wanikani.session.util import generate_characters_for_level
 
 
 def signup(request):
@@ -23,7 +24,7 @@ def signup(request):
 
             user = authenticate(username=username, password=password)
             user_object = save_user(username, password, email)
-            setup_characters(user_object)
+            generate_characters_for_level(user_object)
             log_in(request, user)
             return HttpResponseRedirect('/')
 

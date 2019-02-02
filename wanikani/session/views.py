@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
 from wanikani.models import BaseCharacter, ProgressCharacter, User
-from wanikani.session.util import get_level, get_upcoming_review_date
+from wanikani.session.util import check_level_up, get_level, get_upcoming_review_date, level_up
 
 
 @require_http_methods(['GET'])
@@ -71,4 +71,6 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
         character_object.num_current_incorrect['definitions'] = 0
 
     character_object.save()
+    if check_level_up(user_object):
+        level_up(user_object)
     return character_object.to_json()
