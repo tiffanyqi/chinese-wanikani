@@ -25,7 +25,9 @@ def setup_characters(user):
     now = datetime.datetime.now()
     for character in characters:
         ProgressCharacter.objects.create(
-            user=user,
             character=character,
+            num_correct={'pinyin': 0, 'definitions': 0, 'all': 0},
+            num_current_incorrect={'pinyin': 0, 'definitions': 0},
             unlocked_date=now,
+            user=user,
         ).save()
