@@ -2,11 +2,10 @@ import {SESSION_STATE} from './constants.js';
 import {
   getKey,
   getRandomCharacter,
-  getType,
   isUserCorrect,
   isWordComplete,
 } from './helpers.js';
-import {getCookie, getData} from '../util.js';
+import {generateRandomNumbers, getCookie, getData} from '../util.js';
 
 
 $(document).ready(function() {
@@ -40,6 +39,7 @@ $(document).ready(function() {
     .then(result => result.json())
     .then(result => {
       window.characters = result;
+      window.characterOrder = generateRandomNumbers(result.length);
       loadRandomCharacter();
     });
 });
@@ -48,11 +48,13 @@ function loadRandomCharacter(ev) {
   if (ev && ev.currentTarget.className === 'disabled') {
     ev.stopPropagation();
   } else {
-    window.character = getRandomCharacter(window.characters);
-    window.type = getType();
+    let {character, number, type} = getRandomCharacter(window.characters, window.characterOrder);
+    window.character = character;
+    window.number = number;
+    window.type = type;
     window.state = SESSION_STATE.received;
-    const {session, type} = window;
-    const character = window.character.character;
+    const {session} = window;
+    character = window.character.character;
     $('#session-character-displayed').text(() => character);
     $('#session-character-type').text(() => `${type}:`);
     if (!session[character]) {
@@ -77,6 +79,7 @@ function validate() {
   session[character_string][type] = isCorrect;
   if (!isCorrect) {
     session[character_string]['incorrect'] = true;
+    window.characterOrder.push(window.number);
   }
   const isComplete = isWordComplete(session[character_string]);
   const areBothCorrect = !!(isComplete && !session[character_string]['incorrect']);
