@@ -1,4 +1,4 @@
-import {getCookie, getData} from '../util.js';
+import {SESSION_STATE} from './constants.js';
 import {
   getKey,
   getRandomCharacter,
@@ -6,6 +6,7 @@ import {
   isUserCorrect,
   isWordComplete,
 } from './helpers.js';
+import {getCookie, getData} from '../util.js';
 
 
 $(document).ready(function() {
@@ -13,6 +14,27 @@ $(document).ready(function() {
   $('#session-character-submit').click(validate);
   $('#session-character-get-answer').click(displayAnswer);
   $('#session-character-get-new-character').click(loadRandomCharacter);
+  $('#session-character-input').keypress(function(ev) {
+    if (ev.currentTarget.value && ev.keyCode !== 13) {
+      window.state = SESSION_STATE.answering;
+    }
+  })
+  document.addEventListener('keyup', function (ev) {
+    ev.preventDefault();
+    if (event.keyCode === 13) { // enter
+      switch(window.state) {
+        case SESSION_STATE.received:
+          document.getElementById('session-character-input').focus();
+          break;
+        case SESSION_STATE.answering:
+          validate();
+          break;
+        case SESSION_STATE.answered:
+          loadRandomCharacter();
+          break;
+      }
+    }
+  });
 
   getData('GET', 'current_level_characters_list')
     .then(result => result.json())
@@ -28,6 +50,7 @@ function loadRandomCharacter(ev) {
   } else {
     window.character = getRandomCharacter(window.characters);
     window.type = getType();
+    window.state = SESSION_STATE.received;
     const {session, type} = window;
     const character = window.character.character;
     $('#session-character-displayed').text(() => character);
@@ -41,10 +64,14 @@ function loadRandomCharacter(ev) {
 }
 
 function validate() {
+  if (window.state === SESSION_STATE.received) {
+    return false;
+  }
   const {character, session, type} = window;
   const userInput = $('#session-character-input').val();
   const isCorrect = isUserCorrect(userInput, type, character);
   const results = isCorrect ? `you're right!` : `you're not right`;
+  window.state = SESSION_STATE.answered;
 
   const character_string = character.character;
   session[character_string][type] = isCorrect;
