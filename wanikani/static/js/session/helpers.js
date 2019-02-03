@@ -1,22 +1,25 @@
 import {CHARACTER_FIELDS, TEST_OPTIONS} from './constants.js';
-import {getRandomNumber} from '../util.js';
 
-export function getRandomCharacter(data) {
-  // TODO: ensure there are no duplicates but each number appears twice for P/D
+export function getRandomCharacter(data, characterOrder) {
+  /**
+  * If the number is greater than the max, that is a definition, and the character in the
+  * array is that number minus the max. If the number is less than the max, that
+  * is the pinyin.
+   */
   const max = data.length;
-  const randomNumber = getRandomNumber(max);
-  const character = data[randomNumber];
-  return character;
-}
-
-export function getType() {
-  const randomNumber = getRandomNumber(2);
-  const type = randomNumber === 0 ? TEST_OPTIONS.definition : TEST_OPTIONS.pinyin;
-  return type;
+  const randomNumber = characterOrder.shift();
+  const index = randomNumber > max ? randomNumber - max : randomNumber;
+  const type = randomNumber > max ? TEST_OPTIONS.definition : TEST_OPTIONS.pinyin;
+  const character = data[index];
+  return {
+    character,
+    number: randomNumber,
+    type,
+  };
 }
 
 export function getKey(type) {
-  return isDefinition(type) ? CHARACTER_FIELDS.definitions : CHARACTER_FIELDS.pinyin;
+  return isDefinition(type) ? CHARACTER_FIELDS.definition : CHARACTER_FIELDS.pinyin;
 }
 
 function isDefinition(type) {
@@ -37,5 +40,5 @@ export function isUserCorrect(userInput, type, character) {
 }
 
 export function isWordComplete(character_object) {
-  return !!(character_object[CHARACTER_FIELDS.pinyin] && character_object[CHARACTER_FIELDS.definitions]);
+  return !!(character_object[TEST_OPTIONS.pinyin] && character_object[TEST_OPTIONS.definition]);
 }

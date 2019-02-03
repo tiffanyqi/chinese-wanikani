@@ -3,12 +3,13 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
+from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
 from wanikani.models import BaseCharacter, ProgressCharacter, User
-from wanikani.session.util import get_level, get_upcoming_review_date
+from wanikani.session.util import check_level_up, get_level, get_upcoming_review_date, level_up
 
 
 @require_http_methods(['GET'])
@@ -18,14 +19,15 @@ def get_user_level_characters(request):
 
 def user_level_characters(user):
     user = User.objects.get(username=user.username)
-    results = (ProgressCharacter.objects.filter(character__user_level=user.level, user=user)
+    now = datetime.datetime.now()
+    results = (ProgressCharacter.objects.filter(user=user)
+        .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True))
         .order_by('character__user_level'))
     return [model.to_json() for model in results]
 
 
 @require_http_methods(['POST'])
 def post_updated_character(request):
-    print(request)
     if request.method == 'POST':
         return JsonResponse(update_character(
             json.loads(request.POST.get('both_correct')),
@@ -69,4 +71,6 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
         character_object.num_current_incorrect['definitions'] = 0
 
     character_object.save()
+    if check_level_up(user_object):
+        level_up(user_object)
     return character_object.to_json()

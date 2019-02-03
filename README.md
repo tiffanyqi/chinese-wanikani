@@ -26,11 +26,8 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - all characters page
   - display the number of characters learned and will be learned
   - display characters in order by level
-- individual character page
 - settings page
-- signup/login page
 - make it look nice
-- make an API call to the DB whenever user gets something wrong or right
 - quiz so that users can skip to the appropriate level
 
 ## Learning system

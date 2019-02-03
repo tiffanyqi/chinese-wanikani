@@ -26,6 +26,32 @@ export function getCookie(name) {
   return cookieValue;
 }
 
-export function getRandomNumber(max) {
-  return Math.floor(Math.random() * max);
+export function generateRandomNumbers(max) {
+  /**
+   * This function generates the order in which a user answers accordingly.
+   * It generates a random list of numbers double the size of the length
+   * of the number of characters to subdivide between pinyin and definition.
+   */
+  const numberArray = Array.apply(null, {length: max*2}).map(Number.call, Number);
+  return shuffle(numberArray);
+}
+
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }

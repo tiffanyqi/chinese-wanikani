@@ -2,49 +2,41 @@ from datetime import datetime
 
 from django.test import TestCase
 
-from wanikani.models import BaseCharacter, ProgressCharacter, User
 from wanikani.session.views import update_character
+from wanikani.tests.util import (
+  create_test_base_character,
+  create_test_progress_character,
+  create_test_user,
+)
 
 class SessionUpdateCharacterTestCase(TestCase):
 
   def setup(self):
-    self.user = User.objects.create(
-      email='email',
-      level=1,
-      username='username',
-    )
-    self.base = BaseCharacter.objects.create(
-      character='没',
-      definitions=['definition'],
-      pinyin=['pinyin'],
-      user_level=1,
-    )
-    self.character = ProgressCharacter.objects.create(
-      character=self.base,
-      user=self.user,
-      num_correct={
-        'pinyin': 0,
-        'definitions': 0,
-        'all': 0
-      },
-      num_current_incorrect={
-        'pinyin': 0,
-        'definitions': 0,
-      },
-      num_times_shown=0,
-      level=1,
-      unlocked_date=datetime.now()
+    self.user = create_test_user()
+    self.base = create_test_base_character('没')
+    self.character = create_test_progress_character(self.base, self.user)
+
+  def create_updated_character(self, data):
+    return update_character(
+      data['both_correct'],
+      data['character'],
+      data['is_complete'],
+      data['is_correct'],
+      data['type'],
+      data['user'],
     )
 
   def test_updates_character_correctly_if_answered_correctly(self):
     self.setup()
     data = {
+      'both_correct': False,
       'character': '没',
       'is_complete': False,
       'is_correct': True,
       'type': 'pinyin',
+      'user': self.user,
     }
-    character = update_character(self.user, data)
+    character = self.create_updated_character(data)
     self.assertEquals(character.get('num_times_shown'), 0)
     self.assertEquals(character.get('num_correct').get('pinyin'), 1)
     self.assertEquals(character.get('num_correct').get('definitions'), 0)
@@ -60,8 +52,9 @@ class SessionUpdateCharacterTestCase(TestCase):
       'is_complete': True,
       'is_correct': True,
       'type': 'definitions',
+      'user': self.user,
     }
-    character = update_character(self.user, data)
+    character = self.create_updated_character(data)
     self.assertEquals(character.get('num_times_shown'), 1)
     self.assertEquals(character.get('num_correct').get('pinyin'), 1)
     self.assertEquals(character.get('num_correct').get('definitions'), 1)
@@ -74,12 +67,14 @@ class SessionUpdateCharacterTestCase(TestCase):
   def test_updates_character_correctly_if_answered_incorrectly(self):
     self.setup()
     data = {
+      'both_correct': False,
       'character': '没',
       'is_complete': False,
       'is_correct': False,
       'type': 'pinyin',
+      'user': self.user,
     }
-    character = update_character(self.user, data)
+    character = self.create_updated_character(data)
     self.assertEquals(character.get('num_times_shown'), 0)
     self.assertEquals(character.get('num_correct').get('pinyin'), 0)
     self.assertEquals(character.get('num_correct').get('definitions'), 0)
@@ -95,8 +90,9 @@ class SessionUpdateCharacterTestCase(TestCase):
       'is_complete': False,
       'is_correct': True,
       'type': 'pinyin',
+      'user': self.user,
     }
-    character = update_character(self.user, data)
+    character = self.create_updated_character(data)
     self.assertEquals(character.get('num_times_shown'), 0)
     self.assertEquals(character.get('num_correct').get('pinyin'), 1)
     self.assertEquals(character.get('num_correct').get('definitions'), 0)

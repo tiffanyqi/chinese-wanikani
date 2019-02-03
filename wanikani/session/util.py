@@ -1,5 +1,7 @@
 import datetime
 
+from wanikani.models import BaseCharacter, ProgressCharacter
+
 def get_upcoming_review_date(now, level):
     """
     Wanikani's SRS system separates each level by the following hours: 4, 4, 16, 24, 48, 240, 384, 2160
@@ -22,3 +24,38 @@ def get_level(character):
         return character.level - 1 if character.level > 1 else 1
     else:
         return character.level + 1
+
+
+def check_level_up(user):
+    """
+    Checks whether the user is ready to move onto the next user level.
+    This threshold is made when 90% of the characters' levels are 5 or above.
+    """
+    character_objects = ProgressCharacter.objects.filter(user=user, user__level=user.level)
+    characters_leveled = character_objects.filter(level__gte=5)
+    return (characters_leveled.count() / character_objects.count()) > 0.9
+
+
+def level_up(user):
+    """
+    Levels up the user.
+    """
+    user.level += 1
+    generate_characters_for_level(user)
+    user.save()
+
+
+def generate_characters_for_level(user):
+    """
+    Creates a set of characters directly related to the user's progress
+    """
+    characters = BaseCharacter.objects.filter(user_level=user.level)
+    now = datetime.datetime.now()
+    for character in characters:
+        ProgressCharacter.objects.create(
+            character=character,
+            num_correct={'pinyin': 0, 'definitions': 0, 'all': 0},
+            num_current_incorrect={'pinyin': 0, 'definitions': 0},
+            unlocked_date=now,
+            user=user,
+        ).save()
