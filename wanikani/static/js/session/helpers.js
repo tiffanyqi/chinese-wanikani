@@ -28,7 +28,7 @@ function isDefinition(type) {
 
 export function isUserCorrect(userInput, type, character) {
   const key = getKey(type);
-  const possibleCorrectAnswers = isDefinition(type) ? character[key].split(/[,;]\s+/) : character[key].split(' ');
+  const possibleCorrectAnswers = character[key].split(/[,;]\s+/);
   const listOfAnswers = JSON.parse(possibleCorrectAnswers);
   let result = false;
   if (listOfAnswers.includes(userInput)) {
