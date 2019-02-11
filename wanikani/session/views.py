@@ -13,11 +13,11 @@ from wanikani.session.util import check_level_up, get_level, get_upcoming_review
 
 
 @require_http_methods(['GET'])
-def get_user_level_characters(request):
+def get_characters_to_review(request):
     if request.method == 'GET':
-        return JsonResponse(user_level_characters(request.user), safe=False)
+        return JsonResponse(characters_to_review(request.user), safe=False)
 
-def user_level_characters(user):
+def characters_to_review(user):
     user = User.objects.get(username=user.username)
     now = datetime.datetime.now()
     results = (ProgressCharacter.objects.filter(user=user)
