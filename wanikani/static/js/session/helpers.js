@@ -8,8 +8,8 @@ export function getRandomCharacter(data, characterOrder) {
    */
   const max = data.length;
   const randomNumber = characterOrder.shift();
-  const index = randomNumber > max ? randomNumber - max : randomNumber;
-  const type = randomNumber > max ? TEST_OPTIONS.definition : TEST_OPTIONS.pinyin;
+  const index = randomNumber >= max ? randomNumber - max : randomNumber;
+  const type = randomNumber >= max ? TEST_OPTIONS.definition : TEST_OPTIONS.pinyin;
   const character = data[index];
   return {
     character,

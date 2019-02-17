@@ -40,7 +40,11 @@ $(document).ready(function() {
     .then(result => {
       window.characters = result;
       window.characterOrder = generateRandomNumbers(result.length);
-      loadRandomCharacter();
+      if (result.length) {
+        loadRandomCharacter();
+      } else {
+        $('#session-character-displayed').text(() => "you're done!");
+      }
     })
     .catch(result => console.error('Results of getting current characters is undefined.'));
 });
