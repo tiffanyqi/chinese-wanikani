@@ -42,10 +42,3 @@ def character(request, character):
         'character': BaseCharacter.objects.get(character=character),
     }
     return render(request, 'wanikani/character.html', context)
-
-@login_required
-def session(request):
-    """
-    Begins a session of either a lesson or a review.
-    """
-    return render(request, 'wanikani/session.html')

@@ -2,7 +2,6 @@ import datetime
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.core.serializers import serialize
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
@@ -10,6 +9,21 @@ from django.views.decorators.http import require_http_methods
 
 from wanikani.models import BaseCharacter, ProgressCharacter, User
 from wanikani.session.util import check_level_up, get_level, get_upcoming_review_date, level_up
+
+@login_required
+def review_view(request):
+    """
+    Begins a review session.
+    """
+    return render(request, 'wanikani/session/review.html')
+
+
+@login_required
+def learn_view(request):
+    """
+    Begins a learn session.
+    """
+    return render(request, 'wanikani/session/learn.html')
 
 
 @require_http_methods(['GET'])
