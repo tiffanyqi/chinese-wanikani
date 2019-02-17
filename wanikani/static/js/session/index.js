@@ -43,7 +43,7 @@ $(document).ready(function() {
       if (result.length) {
         loadRandomCharacter();
       } else {
-        $('#session-character-displayed').text(() => "you're done!");
+        window.location = '/session/summary';
       }
     })
     .catch(result => console.error('Results of getting current characters is undefined.'));

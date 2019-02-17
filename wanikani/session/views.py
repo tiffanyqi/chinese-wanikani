@@ -23,7 +23,21 @@ def learn_view(request):
     """
     Begins a learn session.
     """
-    return render(request, 'wanikani/session/learn.html')
+    return render(request, 'wanikani/session/learn.html',)
+
+
+@login_required
+def summary_view(request):
+    """
+    Displays a summary from the previous review or learn.
+    """
+    user = User.objects.get(username=request.user.username)
+    last_characters_reviewed = (ProgressCharacter.objects.filter(user=user)
+        .filter(last_session=user.last_session))
+    context = {
+        'characters': last_characters_reviewed,
+    }
+    return render(request, 'wanikani/session/summary.html', context)
 
 
 @require_http_methods(['GET'])
