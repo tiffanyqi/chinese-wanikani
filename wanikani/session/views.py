@@ -35,13 +35,45 @@ def characters_to_review(user):
     user = User.objects.get(username=user.username)
     now = datetime.datetime.now()
     results = (ProgressCharacter.objects.filter(user=user)
-        .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True))
-        .order_by('character__user_level'))
+        .filter(Q(last_reviewed_date__isnull=False))
+        .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True)))
+    return [model.to_json() for model in results]
+
+
+@require_http_methods(['GET'])
+def get_characters_to_learn(request):
+    if request.method == 'GET':
+        return JsonResponse(characters_to_learn(request.user), safe=False)
+
+def characters_to_learn(user):
+    user = User.objects.get(username=user.username)
+    results = (ProgressCharacter.objects.filter(user=user)
+        .filter(Q(last_reviewed_date__isnull=True)))
     return [model.to_json() for model in results]
 
 
 @require_http_methods(['POST'])
-def post_updated_character(request):
+def update_learned_character(request):
+    if request.method == 'POST':
+        return JsonResponse(set_character_learned(
+            request.POST.get('character'),
+            json.loads(request.POST.get('is_complete')),
+            request.user,
+        ), safe=False)
+
+def set_character_learned(character, is_complete, user):
+    now = datetime.datetime.now()
+    base_character = BaseCharacter.objects.get(character=character)
+    user_object = User.objects.get(username=user.username)
+    character_object = ProgressCharacter.objects.get(character=base_character, user=user_object)
+
+    if is_complete:
+        new_level = get_level(character_object)
+        character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
+        return character_object.to_json()
+
+@require_http_methods(['POST'])
+def update_reviewed_character(request):
     if request.method == 'POST':
         return JsonResponse(update_character(
             json.loads(request.POST.get('both_correct')),

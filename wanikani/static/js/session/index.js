@@ -35,14 +35,14 @@ $(document).ready(function() {
     }
   });
 
-  getData('GET', '/session/current_level_characters_list')
+  getData('GET', characterListURL)
     .then(result => result.json())
     .then(result => {
       window.characters = result;
       window.characterOrder = generateRandomNumbers(result.length);
       loadRandomCharacter();
     })
-    .catch(result => console.error('Resulf ot getting current characters is undefined.'));
+    .catch(result => console.error('Results of getting current characters is undefined.'));
 });
 
 function loadRandomCharacter(ev) {
@@ -90,7 +90,7 @@ function validate() {
   $('#session-character-get-answer').removeClass('disabled');
   $('#session-character-get-new-character').removeClass('disabled');
 
-  $.post('/session/post_updated_character', {
+  $.post(updateCharacterURL, {
     both_correct: areBothCorrect,
     character: character_string,
     is_complete: isComplete,

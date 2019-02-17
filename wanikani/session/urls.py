@@ -6,6 +6,8 @@ urlpatterns = [
     path('learn/', views.learn_view, name='learn'),
     path('review/', views.review_view, name='review'),
 
-    path('current_level_characters_list', views.get_characters_to_review, name='current_level_characters_list'),
-    path('post_updated_character', views.post_updated_character, name='post_updated_character'),
+    path('review_characters_list', views.get_characters_to_review, name='review_characters_list'),
+    path('update_reviewed_character', views.update_reviewed_character, name='update_reviewed_character'),
+    path('learn_character_list', views.get_characters_to_learn, name='learn_character_list'),
+    path('update_learned_character', views.update_learned_character, name='update_learned_character'),
 ]
