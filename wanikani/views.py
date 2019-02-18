@@ -54,3 +54,13 @@ def character(request, character):
         'character': BaseCharacter.objects.get(character=character),
     }
     return render(request, 'wanikani/character.html', context)
+
+
+@require_http_methods(['GET'])
+def get_user(request):
+    if request.method == 'GET':
+        return JsonResponse(user(request.user), safe=False)
+
+def user(user):
+    user = User.objects.get(username=user.username)
+    return user.to_json()

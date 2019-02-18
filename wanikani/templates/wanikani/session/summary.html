@@ -6,11 +6,20 @@
 {% endblock %}
 
 {% block content %}
-  <div>You're done, you don't have any more characters to review!</div>
   <h1>Summary</h1>
-  {% for character in characters %}
-    {{ character.character.character }}
-  {% endfor %}
+  <div>You're done, you don't have any more characters to review!</div>
+    {% if last_session == 0 %}
+      You're session summary will appear here!
+    {% else %}
+      <h2>Incorrect</h2>
+      {% for character in incorrect_characters %}
+        {{ character.character.character }}
+      {% endfor %}
+      <h2>Correct</h2>
+      {% for character in correct_characters %}
+        {{ character.character.character }}
+      {% endfor %}
+    {% endif %}
 {% endblock %}
 
 {% block bottom_js %}

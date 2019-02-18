@@ -34,8 +34,12 @@ def summary_view(request):
     user = User.objects.get(username=request.user.username)
     last_characters_reviewed = (ProgressCharacter.objects.filter(user=user)
         .filter(last_session=user.last_session))
+    correct_characters = last_characters_reviewed.filter(last_correct=True)
+    incorrect_characters = last_characters_reviewed.filter(last_correct=False)
     context = {
-        'characters': last_characters_reviewed,
+        'correct_characters': correct_characters,
+        'incorrect_characters': incorrect_characters,
+        'last_session': user.last_session,
     }
     return render(request, 'wanikani/session/summary.html', context)
 
@@ -73,9 +77,10 @@ def update_learned_character(request):
             request.POST.get('character'),
             json.loads(request.POST.get('is_complete')),
             request.user,
+            json.loads(request.POST.get('session_number')),
         ), safe=False)
 
-def set_character_learned(character, is_complete, user):
+def set_character_learned(character, is_complete, user, session_number):
     now = datetime.datetime.now()
     base_character = BaseCharacter.objects.get(character=character)
     user_object = User.objects.get(username=user.username)
@@ -84,6 +89,8 @@ def set_character_learned(character, is_complete, user):
     if is_complete:
         new_level = get_level(character_object)
         character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
+        character_object.last_session = session_number
+        user_object.last_session = session_number
         return character_object.to_json()
 
 @require_http_methods(['POST'])
@@ -117,8 +124,10 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
         character_object.num_times_shown += 1
 
     if is_correct:
+        character_object.last_correct = True
         character_object.num_correct[type] += 1
     else:
+        character_object.last_correct = False
         character_object.num_current_incorrect[type] += 1
 
     if both_correct:
