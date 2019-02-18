@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block content %}
-  You're done, nice!
+  <div>You're done, you don't have any more characters to review!</div>
+  <h1>Summary</h1>
   {% for character in characters %}
     {{ character.character.character }}
   {% endfor %}
