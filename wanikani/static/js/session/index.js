@@ -2,6 +2,7 @@ import {SESSION_STATE} from './constants.js';
 import {
   getKey,
   getRandomCharacter,
+  isDefinition,
   isUserCorrect,
   isWordComplete,
 } from './helpers.js';
@@ -97,7 +98,12 @@ function validate() {
   const isComplete = isWordComplete(session[character_string]);
   const areBothCorrect = !!(isComplete && !session[character_string]['incorrect']);
 
-  $('#session-character-results').text(() => results);
+  $('.session-character-results').show();
+  $('#session-character-results-text').text(() => results);
+  if (isDefinition(window.type)) {
+    $('.session-character-synonym-submission').show();
+  }
+
   $('#session-character-submit').addClass('disabled');
   $('#session-character-get-answer').removeClass('disabled');
   $('#session-character-get-new-character').removeClass('disabled');
@@ -120,15 +126,20 @@ function displayAnswer(ev) {
   } else {
     const {character, type} = window;
     const key = getKey(type);
-    $('#session-character-answer').text(() => character[key]);
+    $('.session-character-answer').show();
+    $('#session-character-answer-text').text(() => character[key]);
   }
   return false;
 }
 
 function clearFields() {
-  $('#session-character-answer').text(() => '');
-  $('#session-character').text(() => '');
-  $('#session-character-results').text(() => '');
+  $('.session-character-results').hide();
+  $('#session-character-results-text').text(() => '');
+
+  $('.session-character-answer').hide();
+  $('#session-character-answer-text').text(() => '');
+  $('.session-character-synonym-submission').hide();
+
   $('#session-character-get-answer').addClass('disabled');
   $('#session-character-get-new-character').addClass('disabled');
   $('#session-character-submit').removeClass('disabled');

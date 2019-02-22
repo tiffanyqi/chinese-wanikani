@@ -22,7 +22,7 @@ export function getKey(type) {
   return isDefinition(type) ? CHARACTER_FIELDS.definition : CHARACTER_FIELDS.pinyin;
 }
 
-function isDefinition(type) {
+export function isDefinition(type) {
   return type === TEST_OPTIONS.definition;
 }
 

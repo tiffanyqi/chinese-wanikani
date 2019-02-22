@@ -67,7 +67,7 @@ def characters_to_learn(user):
     user = User.objects.get(username=user.username)
     results = (ProgressCharacter.objects.filter(user=user)
         .filter(Q(last_reviewed_date__isnull=True)))
-    return [model.to_json() for model in results]
+    return [model.to_json() for model in results][0:5]
 
 
 @require_http_methods(['POST'])
