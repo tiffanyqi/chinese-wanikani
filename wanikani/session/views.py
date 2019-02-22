@@ -79,7 +79,7 @@ def update_learned_character(request):
             request.user,
         ), safe=False)
 
-def set_character_learned(character, is_complete, user, session_number):
+def set_character_learned(character, is_complete, user):
     now = datetime.datetime.now()
     base_character = BaseCharacter.objects.get(character=character)
     user_object = User.objects.get(username=user.username)
