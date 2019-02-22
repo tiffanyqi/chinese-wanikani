@@ -88,6 +88,7 @@ def set_character_learned(character, is_complete, user):
     if is_complete:
         new_level = get_level(character_object)
         character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
+        character_object.save()
         return character_object.to_json()
 
 @require_http_methods(['POST'])
