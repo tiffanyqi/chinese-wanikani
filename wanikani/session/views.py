@@ -77,7 +77,6 @@ def update_learned_character(request):
             request.POST.get('character'),
             json.loads(request.POST.get('is_complete')),
             request.user,
-            json.loads(request.POST.get('session_number')),
         ), safe=False)
 
 def set_character_learned(character, is_complete, user, session_number):
@@ -89,8 +88,6 @@ def set_character_learned(character, is_complete, user, session_number):
     if is_complete:
         new_level = get_level(character_object)
         character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
-        character_object.last_session = session_number
-        user_object.last_session = session_number
         return character_object.to_json()
 
 @require_http_methods(['POST'])
@@ -103,9 +100,10 @@ def update_reviewed_character(request):
             json.loads(request.POST.get('is_correct')),
             request.POST.get('type'),
             request.user,
+            json.loads(request.POST.get('session_number')),
         ), safe=False)
 
-def update_character(both_correct, character, is_complete, is_correct, type, user):
+def update_character(both_correct, character, is_complete, is_correct, type, user, session_number):
     """
     Updates the character whether the user got the question right or wrong.
 
@@ -115,6 +113,7 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
     :is_complete - when the user answered both pinyin and definition correctly at some point
     :is_correct - when the user's input is correct
     :type - whether the input is for pinyin or definition
+    :session_number - what session number the character should be
     """
     now = datetime.datetime.now()
     base_character = BaseCharacter.objects.get(character=character)
@@ -138,6 +137,8 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
         character_object.level = new_level
         character_object.num_current_incorrect['pinyin'] = 0
         character_object.num_current_incorrect['definitions'] = 0
+        character_object.last_session = session_number
+        user_object.last_session = session_number
 
     character_object.save()
     if check_level_up(user_object):
