@@ -15,6 +15,11 @@ class User(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
+    last_session = models.IntegerField(default=0)
+
+    def to_json(self):
+        keys = ['name', 'email', 'level', 'username', 'last_session', 'last_session']
+        return {key: getattr(self, key) for key in keys}
 
 
 # Currently not being used
@@ -63,6 +68,7 @@ class ProgressCharacter(models.Model):
     last_reviewed_date = models.DateTimeField(default=None, null=True)
     level = models.IntegerField(default=1, null=False)
     last_session = models.IntegerField(default=0)
+    last_correct = models.BooleanField(default=False)
 
     def to_json(self):
         character_keys = ['character', 'definitions', 'pinyin', 'user_level']

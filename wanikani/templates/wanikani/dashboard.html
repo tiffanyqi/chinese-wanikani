@@ -7,7 +7,9 @@
 
 {% block content %}
   <div class="container">
-    Level: {{ user.level }}
+    <div>Level: {{ user.level }}</div>
+    <div>Learn: {{ characters_to_learn }}</div>
+    <div>Review: {{ characters_to_review }}</div>
     {% for character in characters %}
       <div class="character-container">
         <div class="character">

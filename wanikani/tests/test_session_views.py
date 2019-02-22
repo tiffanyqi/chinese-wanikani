@@ -9,7 +9,7 @@ from wanikani.tests.util import (
   create_test_user,
 )
 
-class SessionUpdateCharacterTestCase(TestCase):
+class SessionUpdateReviewedCharacterTestCase(TestCase):
 
   def setup(self):
     self.user = create_test_user()

@@ -1,0 +1,21 @@
+{% extends "wanikani/base.html" %}
+{% load staticfiles %}
+
+{% block head_js %}
+  {{ block.super }}
+  <script type='text/javascript'>
+    // TODO: don't do it this way
+    const characterListURL = '/session/learn_character_list';
+    const updateCharacterURL = '/session/update_learned_character';
+    const incrementSession = false;
+  </script>
+  <script type="module" src="{% static "js/session/index.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+  {% include 'wanikani/session/_partial.html' %}
+{% endblock %}
+
+{% block bottom_js %}
+  {{ block.super }}
+{% endblock %}

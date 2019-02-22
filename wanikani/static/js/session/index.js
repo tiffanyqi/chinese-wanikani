@@ -35,13 +35,26 @@ $(document).ready(function() {
     }
   });
 
-  getData('GET', 'current_level_characters_list')
+  getData('GET', characterListURL)
     .then(result => result.json())
     .then(result => {
       window.characters = result;
       window.characterOrder = generateRandomNumbers(result.length);
-      loadRandomCharacter();
+      if (result.length) {
+        loadRandomCharacter();
+      } else {
+        window.location = '/session/summary';
+      }
+    })
+    .catch(result => console.error('Results of getting current characters is undefined.'));
+
+  if (incrementSession) {
+    getData('GET', '/user')
+    .then(result => result.json())
+    .then(result => {
+      window.session_number = result.last_session + 1;
     });
+  }
 });
 
 function loadRandomCharacter(ev) {
@@ -89,11 +102,12 @@ function validate() {
   $('#session-character-get-answer').removeClass('disabled');
   $('#session-character-get-new-character').removeClass('disabled');
 
-  $.post('post_updated_character', {
+  $.post(updateCharacterURL, {
     both_correct: areBothCorrect,
     character: character_string,
     is_complete: isComplete,
     is_correct: isCorrect,
+    session_number: window.session_number,
     type: getKey(type),
     'csrfmiddlewaretoken': getCookie('csrftoken'),
   });
