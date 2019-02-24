@@ -41,8 +41,8 @@ class BaseCharacter(models.Model):
     definitions and pinyin.
     """
     character = models.CharField(null=True, max_length=50)
-    definitions = JSONField()
-    pinyin = JSONField()
+    definitions = ArrayField(base_field=models.CharField(max_length=50), default=list)
+    pinyin = ArrayField(base_field=models.CharField(max_length=50), default=list)
     hsk_level = models.IntegerField(default=0)
     frequency = models.IntegerField(default=0)
     user_level = models.IntegerField(default=0)
