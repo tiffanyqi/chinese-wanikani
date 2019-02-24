@@ -14,6 +14,7 @@ $(document).ready(function() {
   $('#session-character-submit').click(validate);
   $('#session-character-get-answer').click(displayAnswer);
   $('#session-character-get-new-character').click(loadRandomCharacter);
+  $('#session-character-synonym-input-submit').click(addSynonym);
   $('#session-character-input').keypress(function(ev) {
     if (ev.currentTarget.value && ev.keyCode !== 13) {
       window.state = SESSION_STATE.answering;
@@ -132,6 +133,16 @@ function displayAnswer(ev) {
   return false;
 }
 
+function addSynonym(ev) {
+  $.post('/session/update_character_entry', {
+    character: window.character.character,
+    fields: JSON.stringify({
+      'synonym': $('#session-character-synonym-input').val(),
+    }),
+    'csrfmiddlewaretoken': getCookie('csrftoken'),
+  });
+}
+
 function clearFields() {
   $('.session-character-results').hide();
   $('#session-character-results-text').text(() => '');
@@ -145,5 +156,8 @@ function clearFields() {
   $('#session-character-submit').removeClass('disabled');
   if (document.getElementById('session-character-input')) {
     document.getElementById('session-character-input').value = '';
+  }
+  if (document.getElementById('session-character-synonym-input')) {
+    document.getElementById('session-character-synonym-input').value = '';
   }
 }

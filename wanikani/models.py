@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AbstractBaseUser, UserManager
-from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 from django.utils import timezone
 
@@ -69,6 +69,7 @@ class ProgressCharacter(models.Model):
     level = models.IntegerField(default=1, null=False)
     last_session = models.IntegerField(default=0)
     last_correct = models.BooleanField(default=False)
+    synonyms = ArrayField(base_field=models.CharField(max_length=50), default=list)
 
     def to_json(self):
         character_keys = ['character', 'definitions', 'pinyin', 'user_level']
@@ -78,6 +79,7 @@ class ProgressCharacter(models.Model):
                 'unlocked_date',
                 'upcoming_review_date',
                 'last_reviewed_date',
+                'synonyms',
                 'level']
         attributes = {key: getattr(self, key) for key in keys}
         for key in character_keys:
