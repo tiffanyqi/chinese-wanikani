@@ -20,7 +20,7 @@ class Command(BaseCommand):
           split_line = line.split('\t')
           vocabulary = split_line[0]
           pinyin = split_line[2]
-          definition = re.split(', •;', split_line[3])
+          definition = re.split('; | • ', split_line[3])
           hsk_level = split_line[4]
           data[vocabulary] = {
             'hsk_level': hsk_level,
