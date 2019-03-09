@@ -6,9 +6,9 @@
       "qi3"
     ],
     "definition": [
-      "to rise",
-      "to raise",
-      "to get up"
+      "rise",
+      "raise",
+      "get up"
     ],
     "type": "character"
   },
@@ -32,9 +32,10 @@
     ],
     "definition": [
       "heat",
-      "to heat up",
+      "heat up",
       "fervent",
-      "hot (of weather)",
+      "hot",
+      "hot weather",
       "warm up"
     ],
     "type": "character"
@@ -70,13 +71,13 @@
       "hui2"
     ],
     "definition": [
-      "(a measure word for matters or actions) a time",
-      "to circle",
-      "to go back",
-      "to turn around",
-      "to answer",
-      "to return",
-      "to revolve",
+      "times",
+      "circle",
+      "go back",
+      "turn around",
+      "answer",
+      "return",
+      "revolve",
       "Islam"
     ],
     "type": "character"
@@ -142,11 +143,10 @@
       "bind",
       "be",
       "system",
-      "to tie",
       "department",
       "faculty",
       "connect",
-      "to tie"
+      "tie"
     ],
     "type": "character"
   },
@@ -171,7 +171,6 @@
       "one",
       "1",
       "single",
-      "a(n)"
     ],
     "type": "character"
   },
@@ -209,9 +208,8 @@
       "on",
       "on top",
       "upon",
-      "first (of two parts)",
-      "previous or last (week",
-      "etc.)",
+      "first",
+      "last",
       "upper",
       "higher",
       "above",

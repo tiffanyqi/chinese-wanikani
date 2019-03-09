@@ -14,7 +14,7 @@ class Command(BaseCommand):
       self.dump_json()
 
     def extract_hsk_level(self):
-      with open('wanikani/static/data/hsk.txt', 'r') as file:
+      with open('wanikani/static/data/sources/hsk.txt', 'r') as file:
         for line in file:
           split_line = line.split(', ')
           level = int(split_line[0])
@@ -23,7 +23,7 @@ class Command(BaseCommand):
             data[character] = {'hsk_level': level}
 
     def extract_characters(self):
-      with open('wanikani/static/data/character-frequency.txt', 'r') as file:
+      with open('wanikani/static/data/sources/character-frequency.txt', 'r') as file:
         for line in file.read().split('\n'):
           split_line = line.split('\t')
           frequency_order = int(split_line[0])
