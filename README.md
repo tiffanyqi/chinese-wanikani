@@ -14,8 +14,6 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - Session class - each review or lesson session
 
 # Running the app
-
-## Initial setup
 - Ensure you have python 3.7
 - `brew install pipenv`, linked to python 3.7
 - ensure you have postgresql installed, version 9.6
@@ -29,10 +27,8 @@ CREATE DATABASE wanikani;
 CREATE ROLE username WITH PASSWORD 'password';
 ```
 - `python3 manage.py runserver`, runs the app! now go to localhost:8000 to ensure it works
-
-## Creating a working setup for the database
-- Save characters in the database: `python3 manage.py populate_characters_in_db`
-- Update levels for characters: `python3 manage.py update_levels`
+- run `bash wanikani/management/commands/setup_db.sh` to populate characters and vocabulary in the database
+- create a user! This will automatically create ProgressCharacters for you.
 
 # TODOs:
 

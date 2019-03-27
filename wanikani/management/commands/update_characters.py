@@ -7,7 +7,9 @@ from django.core.management.base import BaseCommand
 data = OrderedDict()
 
 class Command(BaseCommand):
-
+    """
+    Updates the character data file from various sources.
+    """
     def handle(self, *args, **options):
       self.extract_hsk_level()
       self.extract_characters()

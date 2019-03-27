@@ -2579,9 +2579,6 @@
     ],
     "type": "character"
   },
-  "\n": {
-    "hsk_level": 5
-  },
   "阴": {
     "hsk_level": 2,
     "frequency": 987,
@@ -6082,9 +6079,6 @@
       "temperate"
     ],
     "type": "character"
-  },
-  "﻿": {
-    "hsk_level": 3
   },
   "根": {
     "hsk_level": 3,
@@ -31773,9 +31767,6 @@
     ],
     "type": "character"
   },
-  "啰": {
-    "hsk_level": 6
-  },
   "昧": {
     "hsk_level": 6,
     "frequency": 2376,
@@ -35527,8 +35518,5 @@
       "to cry (of birds)"
     ],
     "type": "character"
-  },
-  "": {
-    "hsk_level": 6
   }
 }

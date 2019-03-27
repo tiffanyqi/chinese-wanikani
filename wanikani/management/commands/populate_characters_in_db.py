@@ -16,19 +16,18 @@ class Command(BaseCommand):
           data = json.load(f)
           for character in data:
             character_obj = data[character]
-            try:
-                definitions = json.dumps(character_obj['definition'])
-                pinyin = json.dumps(character_obj['pinyin'])
-                hsk_level = character_obj['hsk_level']
-                frequency = character_obj['frequency']
-                # BaseCharacter.objects.get_or_create(
-                #     definitions=definitions,
-                #     character=character,
-                #     pinyin=pinyin,
-                #     hsk_level=hsk_level,
-                #     frequency=frequency
-                # )
-            except KeyError as e:
-                print(character, 'KeyError',  'key', e)
-            except DataError as e:
-                print(character, 'DataError', e)
+            required_keys = ['definition', 'frequency', 'hsk_level', 'pinyin']
+            if all(key in character_obj for key in required_keys):
+                definitions = json.dumps(character_obj.get('definition'))
+                pinyin = json.dumps(character_obj.get('pinyin'))
+                hsk_level = character_obj.get('hsk_level')
+                frequency = character_obj.get('frequency')
+                BaseCharacter.objects.update_or_create(
+                    definitions=definitions,
+                    character=character,
+                    pinyin=pinyin,
+                    hsk_level=hsk_level,
+                    frequency=frequency
+                )
+            else:
+                print('this character object does not contain some keys. please update or remove from characters.json {} {}'.format(character, character_obj))
