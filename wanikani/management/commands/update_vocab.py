@@ -9,7 +9,10 @@ from wanikani.models import BaseCharacter
 data = OrderedDict()
 
 class Command(BaseCommand):
-
+    """
+    Updates the vocabulary data file from various sources. Also assigns the user level
+    in the data file.
+    """
     def handle(self, *args, **options):
       self.extract_characters()
       self.dump_json()
