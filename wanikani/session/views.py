@@ -67,7 +67,7 @@ def characters_to_learn(user):
     user = User.objects.get(username=user.username)
     results = (ProgressCharacter.objects.filter(user=user)
         .filter(Q(last_reviewed_date__isnull=True)))
-    return [model.to_json() for model in results]
+    return [model.to_json() for model in results][0:5]
 
 
 @require_http_methods(['POST'])
@@ -144,4 +144,23 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
     character_object.save()
     if check_level_up(user_object):
         level_up(user_object)
+    return character_object.to_json()
+
+
+@require_http_methods(['POST'])
+def update_character_entry(request):
+    if request.method == 'POST':
+        return JsonResponse(update_character_of_fields(
+            request.POST.get('character'),
+            json.loads(request.POST.get('fields')),
+            request.user,
+        ), safe=False)
+
+def update_character_of_fields(character, fields, user):
+    base_character = BaseCharacter.objects.get(character=character)
+    user_object = User.objects.get(username=user.username)
+    character_object = ProgressCharacter.objects.get(character=base_character, user=user_object)
+    if 'synonym' in fields:
+        character_object.synonyms.append(fields['synonym'])
+        character_object.save()
     return character_object.to_json()

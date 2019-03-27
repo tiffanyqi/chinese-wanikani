@@ -14,4 +14,5 @@ urlpatterns = [
     path('update_reviewed_character', views.update_reviewed_character, name='update_reviewed_character'),
     path('learn_character_list', views.get_characters_to_learn, name='learn_character_list'),
     path('update_learned_character', views.update_learned_character, name='update_learned_character'),
+    path('update_character_entry', views.update_character_entry, name='update_character_entry'),
 ]

@@ -2,6 +2,7 @@ import {SESSION_STATE} from './constants.js';
 import {
   getKey,
   getRandomCharacter,
+  isDefinition,
   isUserCorrect,
   isWordComplete,
 } from './helpers.js';
@@ -13,6 +14,7 @@ $(document).ready(function() {
   $('#session-character-submit').click(validate);
   $('#session-character-get-answer').click(displayAnswer);
   $('#session-character-get-new-character').click(loadRandomCharacter);
+  $('#session-character-synonym-input-submit').click(addSynonym);
   $('#session-character-input').keypress(function(ev) {
     if (ev.currentTarget.value && ev.keyCode !== 13) {
       window.state = SESSION_STATE.answering;
@@ -97,7 +99,12 @@ function validate() {
   const isComplete = isWordComplete(session[character_string]);
   const areBothCorrect = !!(isComplete && !session[character_string]['incorrect']);
 
-  $('#session-character-results').text(() => results);
+  $('.session-character-results').show();
+  $('#session-character-results-text').text(() => results);
+  if (isDefinition(window.type)) {
+    $('.session-character-synonym-submission').show();
+  }
+
   $('#session-character-submit').addClass('disabled');
   $('#session-character-get-answer').removeClass('disabled');
   $('#session-character-get-new-character').removeClass('disabled');
@@ -120,19 +127,37 @@ function displayAnswer(ev) {
   } else {
     const {character, type} = window;
     const key = getKey(type);
-    $('#session-character-answer').text(() => character[key]);
+    $('.session-character-answer').show();
+    $('#session-character-answer-text').text(() => character[key]);
   }
   return false;
 }
 
+function addSynonym(ev) {
+  $.post('/session/update_character_entry', {
+    character: window.character.character,
+    fields: JSON.stringify({
+      'synonym': $('#session-character-synonym-input').val(),
+    }),
+    'csrfmiddlewaretoken': getCookie('csrftoken'),
+  });
+}
+
 function clearFields() {
-  $('#session-character-answer').text(() => '');
-  $('#session-character').text(() => '');
-  $('#session-character-results').text(() => '');
+  $('.session-character-results').hide();
+  $('#session-character-results-text').text(() => '');
+
+  $('.session-character-answer').hide();
+  $('#session-character-answer-text').text(() => '');
+  $('.session-character-synonym-submission').hide();
+
   $('#session-character-get-answer').addClass('disabled');
   $('#session-character-get-new-character').addClass('disabled');
   $('#session-character-submit').removeClass('disabled');
   if (document.getElementById('session-character-input')) {
     document.getElementById('session-character-input').value = '';
+  }
+  if (document.getElementById('session-character-synonym-input')) {
+    document.getElementById('session-character-synonym-input').value = '';
   }
 }
