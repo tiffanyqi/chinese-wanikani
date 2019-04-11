@@ -143,7 +143,7 @@ WEBPACK_LOADER = {
     }
 }
 
-if not DEBUG:
+if os.environ['WANIKANI_ENV'] == 'production':
     WEBPACK_LOADER['DEFAULT'].update({
         'BUNDLE_DIR_NAME': 'dist/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-prod.json')
