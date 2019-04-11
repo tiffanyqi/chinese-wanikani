@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.prod.config.js",
+    "build-local": "webpack --config webpack.local.config.js",
     "watch": "webpack --config webpack.local.config.js --watch"
   },
   "repository": {
