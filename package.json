@@ -4,9 +4,8 @@
   "description": "Chinese version of Wanikani == Wanikani is a great way to learn kanji. According to the forums, there's no good app that does what Wanikani does for Chinese. So, here's my attempt at that.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.local.config.js",
-    "heroku-post-build": "webpack --config webpack.prod.config.js",
-    "watch": "webpack --config webpack.localconfig.js --watch"
+    "build": "webpack --config webpack.prod.config.js",
+    "watch": "webpack --config webpack.local.config.js --watch"
   },
   "repository": {
     "type": "git",
