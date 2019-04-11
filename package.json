@@ -1,0 +1,37 @@
+{
+  "name": "chinese-wanikani",
+  "version": "1.0.0",
+  "description": "Chinese version of Wanikani == Wanikani is a great way to learn kanji. According to the forums, there's no good app that does what Wanikani does for Chinese. So, here's my attempt at that.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.local.config.js",
+    "heroku-post-build": "webpack --config webpack.prod.config.js",
+    "watch": "webpack --config webpack.localconfig.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiffanyqi/chinese-wanikani.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tiffanyqi/chinese-wanikani/issues"
+  },
+  "homepage": "https://github.com/tiffanyqi/chinese-wanikani#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "weak-key": "^1.0.1",
+    "webpack": "^4.29.6",
+    "webpack-bundle-tracker": "^0.4.2-beta",
+    "webpack-cli": "^3.3.0"
+  }
+}

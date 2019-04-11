@@ -55,6 +55,9 @@ def character(request, character):
     }
     return render(request, 'wanikani/character.html', context)
 
+def test(request):
+    return render(request, 'wanikani/test.html')
+
 
 @require_http_methods(['GET'])
 def get_user(request):
