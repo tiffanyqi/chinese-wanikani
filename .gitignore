@@ -1,0 +1,6 @@
+.vscode/*
+*.pyc
+webpack-stats.json
+webpack-stats-prod.json
+wanikani/static/bundles
+wanikani/static/dist

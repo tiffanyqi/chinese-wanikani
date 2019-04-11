@@ -8,12 +8,7 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - Dictionary data from https://www.mdbg.net/chinese/dictionary?page=cedict
 - Other character data from http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string, which came from http://www.unicode.org/charts/unihan.html
 
-# Schema:
-- Each character has its own information based on the full JSON dictionary and various information from the user
-- User class
-- Session class - each review or lesson session
-
-# Running the app
+# Initializing the app
 - Ensure you have python 3.7
 - `brew install pipenv`, linked to python 3.7
 - ensure you have postgresql installed, version 9.6
@@ -29,6 +24,16 @@ CREATE ROLE username WITH PASSWORD 'password';
 - `python3 manage.py runserver`, runs the app! now go to localhost:8000 to ensure it works
 - run `bash wanikani/management/commands/setup_db.sh` to populate characters and vocabulary in the database
 - create a user! This will automatically create ProgressCharacters for you.
+
+# Running the app
+- `pipenv shell` creates the virtual environment for you 
+- `npm run dev` runs webpack
+- `python3 manage.py runserver`, runs the server, will show up as localhost:8000
+
+# Schema:
+- Each character has its own information based on the full JSON dictionary and various information from the user
+- User class
+- Session class - each review or lesson session
 
 # TODOs:
 
