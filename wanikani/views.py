@@ -11,6 +11,10 @@ from django.views.decorators.http import require_http_methods
 from wanikani.models import BaseCharacter, ProgressCharacter, User
 
 
+def home(request):
+    return render(request, 'wanikani/new-base.html')
+
+
 def index(request):
     """
     Displays the user's dashboard or the logged out page
@@ -54,10 +58,6 @@ def character(request, character):
         'character': BaseCharacter.objects.get(character=character),
     }
     return render(request, 'wanikani/character.html', context)
-
-def test(request):
-    return render(request, 'wanikani/test.html')
-
 
 @require_http_methods(['GET'])
 def get_user(request):

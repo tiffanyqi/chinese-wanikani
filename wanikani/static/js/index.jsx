@@ -1,8 +1,8 @@
 const React = require('react');
 const ReactDOM = require("react-dom");
-import {App} from './app';
+import {WanikaniApp} from './app';
 
 ReactDOM.render(
-    <App/>,
-    document.getElementById('react-app')
+    <WanikaniApp/>,
+    document.getElementById('wanikani-app')
 );
