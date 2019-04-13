@@ -23,11 +23,10 @@ export class Character extends React.Component {
         <div className="container">
           <h1>{character.character}</h1>
           <ul>
-            <li>Frequency: {character.frequency}</li>
-            <li>Pinyin: {character.pinyin}</li>
-            <li>Definition: {character.definitions}</li>
-            <li>HSK Level: {character.hsk_level}</li>
-            <li>User Level: {character.user_level}</li>
+            <li key="character-pinyin">Pinyin: {character.pinyin}</li>
+            <li key="character-definition-">Definition: {character.definitions}</li>
+            <li key="character-hsk-level">HSK Level: {character.hsk_level}</li>
+            <li key="character-user-level">User Level: {character.user_level}</li>
           </ul>
         </div>
       );

@@ -14,6 +14,9 @@ urlpatterns = [
     # API
     path('user/', views.user, name='user'),
     path('request_characters/', views.characters, name='characters'),
+    path('request_characters/learn/', views.characters_to_learn, name='characters_to_learn'),
+    path('request_characters/review/', views.characters_to_review, name='characters_to_review'),
+    path('request_characters/level/', views.characters_at_level, name='characters_at_level'),
     path('request_characters/<str:character>/', views.character, name='character'),
 
     # React catch all
