@@ -12,7 +12,6 @@ export function Header() {
                     <li><Link to="/characters">Characters</Link></li>
                 </ul>
             </nav>
-
         </header>
     );
 }

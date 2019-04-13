@@ -40,17 +40,6 @@ def index(request):
         return render(request, 'wanikani/index.html')
 
 
-@login_required
-def character(request, character):
-    """
-    Provides more information on a single character
-    """
-    context = {
-        'character': BaseCharacter.objects.get(character=character),
-    }
-    return render(request, 'wanikani/character.html', context)
-
-
 @require_http_methods(['GET'])
 def user(request):
     if request.method == 'GET':
@@ -63,3 +52,15 @@ def characters(request):
     if request.method == 'GET':
         results = list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level'))
         return JsonResponse([model.to_json() for model in results], safe=False)
+
+
+@require_http_methods(['GET'])
+def character(request, character):
+    """
+    Provides more information on a single character
+    """
+    if request.method == 'GET':
+        print(character)
+        char = BaseCharacter.objects.get(character=character)
+        print(char)
+        return JsonResponse(char.to_json(), safe=False)
