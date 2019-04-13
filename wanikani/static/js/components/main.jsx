@@ -9,7 +9,7 @@ export function Main() {
   return (
     <main>
       <Switch>
-        <Route exact path='/index' component={Index}/>
+        <Route exact path='/' component={Index}/>
         <Route path='/characters' component={Characters}/>
       </Switch>
     </main>

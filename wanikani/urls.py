@@ -8,7 +8,7 @@ urlpatterns = [
     path('home/', views.home, name='home'),
     path('registration/', include('wanikani.registration.urls')),
 
-    path('', views.index, name='index'),
+    # path('', views.index, name='index'),
     path('session/', include('wanikani.session.urls')),
 
     # API

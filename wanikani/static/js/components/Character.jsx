@@ -12,21 +12,8 @@ export class Character extends React.Component {
     }
   }
 
-  async getCharacter() {
-    try {
-      const response = await getData('GET', `/request_characters/${this.character}/`);
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      this.setState({characterObject: json });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   componentDidMount() {
-    this.getCharacter();
+    this.fetchCharacter();
   }
 
   render() {
@@ -48,6 +35,19 @@ export class Character extends React.Component {
       return (
         <div>Character does not exist!</div>
       )
+    }
+  }
+
+  async fetchCharacter() {
+    try {
+      const response = await getData('GET', `/request_characters/${this.character}/`);
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const json = await response.json();
+      this.setState({characterObject: json });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

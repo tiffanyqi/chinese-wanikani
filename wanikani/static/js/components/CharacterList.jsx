@@ -12,21 +12,8 @@ export class CharacterList extends React.Component {
     }
   }
 
-  async setCharacters() {
-    try {
-      const response = await getData('GET', '/request_characters/');
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      this.setState({characters: json });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   componentDidMount() {
-    this.setCharacters();
+    this.fetchCharacters();
   }
 
   render() {
@@ -44,5 +31,18 @@ export class CharacterList extends React.Component {
         <ul>{characterList}</ul>
       </div>
     )
+  }
+
+  async fetchCharacters() {
+    try {
+      const response = await getData('GET', '/request_characters/');
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      const json = await response.json();
+      this.setState({characters: json });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
