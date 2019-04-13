@@ -1,31 +1,48 @@
 import React from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Link, Route, Switch} from 'react-router-dom';
+
+import {getData} from '../util.js';
 
 
 export function Main() {
-    return (
-        <main>
-            <Switch>
-                <Route exact path='/home' component={Home}/>
-                <Route path='/roster' component={Roster}/>
-                <Route path='/schedule' component={Schedule}/>
-            </Switch>
-        </main>
-    );
+  return (
+    <main>
+      <Switch>
+        <Route exact path='/index' component={Index}/>
+        <Route path='/roster' component={Roster}/>
+        <Route path='/characters' component={Characters}/>
+      </Switch>
+    </main>
+  );
 }
 
+function Index() {
+  return (
+    <div>
+      <h1>Welcome!</h1>
+      {/* TODO: convert this to react? */}
+      <div className="container">
+        <a href="/registration/signup/"><button type="button">Sign Up</button></a>
+        <a href="/registration/login/"><button type="button">Login</button></a>
+      </div>
+    </div>
+  );
+}
+
+// TODO: remove this
 function Roster() {
-    return (
-        <div>
-            <h2>This is a roster page!</h2>
-            <Switch>
-                <Route exact path='/roster' component={FullRoster}/>
-                <Route path='/roster/:number' component={Player}/>
-            </Switch>
-        </div>
-    );
+  return (
+    <div>
+      <h2>This is a roster page!</h2>
+      <Switch>
+        <Route exact path='/roster' component={FullRoster}/>
+        <Route path='/roster/:number' component={Player}/>
+      </Switch>
+    </div>
+  );
 }
 
+// TODO: remove this
 function Player(props) {
   const player = {
     'name': 'hi',
@@ -43,25 +60,39 @@ function Player(props) {
   );
 }
 
-function Schedule() {
+class Characters extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      characters: [],
+    }
+  }
+
+  async setCharacters() {
+    const response = await getData('GET', '/characters/');
+    const json = await response.json();
+    this.setState({characters: json});
+  }
+
+  render() {
+    this.setCharacters();
+    const characterList = this.state.characters.map(char => {
+      return (
+        <li key={char.character}>
+            {char.character}
+        </li>
+      );
+    });
+
     return (
       <div>
-        <ul>
-          <li>6/5 @ Evergreens</li>
-          <li>6/8 vs Kickers</li>
-          <li>6/14 @ United</li>
-        </ul>
+        <h1>Characters</h1>
+        <ul>{characterList}</ul>
       </div>
-    );
+    )
   }
-  
-  function Home() {
-    return (
-      <div>
-        <h1>Welcome to the Tornadoes Website!</h1>
-      </div>
-    );
-  }
+} 
+
 
   function FullRoster() {
       return (

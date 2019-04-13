@@ -39,15 +39,6 @@ def index(request):
     except User.DoesNotExist:
         return render(request, 'wanikani/index.html')
 
-@login_required
-def characters(request):
-    """
-    Displays all characters
-    """
-    context = {
-        'characters': list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level')),
-    }
-    return render(request, 'wanikani/characters.html', context)
 
 @login_required
 def character(request, character):
@@ -59,11 +50,16 @@ def character(request, character):
     }
     return render(request, 'wanikani/character.html', context)
 
-@require_http_methods(['GET'])
-def get_user(request):
-    if request.method == 'GET':
-        return JsonResponse(user(request.user), safe=False)
 
-def user(user):
-    user = User.objects.get(username=user.username)
-    return user.to_json()
+@require_http_methods(['GET'])
+def user(request):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.user.username)
+        return JsonResponse(user.to_json(), safe=False)
+
+
+@require_http_methods(['GET'])
+def characters(request):
+    if request.method == 'GET':
+        results = list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level'))
+        return JsonResponse([model.to_json() for model in results], safe=False)
