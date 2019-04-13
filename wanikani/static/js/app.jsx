@@ -1,10 +1,14 @@
-const React = require('react');
-import {Navigation} from './components/navigation';
+import React from 'react';
 
-export class WanikaniApp extends React.Component {
-    render() {
-        return (
-            <Navigation/>
-        );
-    }
+import {Header} from './components/header';
+import {Main} from './components/main';
+
+
+export function App() {
+    return (
+        <div>
+            <Header />
+            <Main />
+        </div>
+    );
 }
