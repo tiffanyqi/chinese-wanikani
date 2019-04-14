@@ -5,10 +5,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', views.home, name='home'),
     path('registration/', include('wanikani.registration.urls')),
-
-    # path('', views.index, name='index'),
     path('session/', include('wanikani.session.urls')),
 
     # API
@@ -20,5 +17,6 @@ urlpatterns = [
     path('request_characters/<str:character>/', views.character, name='character'),
 
     # React catch all
+    path('home/', views.home, name='home'),
     re_path(r'^(?:.*)/?$', views.home, name='home'),
 ]

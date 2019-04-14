@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getData} from '../util.js';
+import {getResponse} from '../util.js';
 
 
 export class Character extends React.Component {
@@ -38,15 +38,7 @@ export class Character extends React.Component {
   }
 
   async fetchCharacter() {
-    try {
-      const response = await getData('GET', `/request_characters/${this.character}/`);
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      this.setState({characterObject: json });
-    } catch (error) {
-      console.log(error);
-    }
+    const characterObject = await getResponse(`/request_characters/${this.character}/`);
+    this.setState({characterObject});
   }
 }

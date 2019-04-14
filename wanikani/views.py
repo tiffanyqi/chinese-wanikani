@@ -15,31 +15,6 @@ def home(request):
     return render(request, 'wanikani/new-base.html')
 
 
-def index(request):
-    """
-    Displays the user's dashboard or the logged out page
-    """
-    try:
-        user = User.objects.get(username=request.user.username)
-        now = datetime.datetime.now()
-        context = {
-            'characters': BaseCharacter.objects.filter(user_level=user.level),
-            'characters_to_learn': (ProgressCharacter.objects
-                .filter(user=user)
-                .filter(Q(last_reviewed_date__isnull=True))
-                .count()),
-            'characters_to_review': (ProgressCharacter.objects
-                .filter(user=user)
-                .filter(Q(last_reviewed_date__isnull=False))
-                .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True))
-                .count()),
-            'user': user,
-        }
-        return render(request, 'wanikani/dashboard.html', context)
-    except User.DoesNotExist:
-        return render(request, 'wanikani/index.html')
-
-
 @require_http_methods(['GET'])
 def user(request):
     if request.method == 'GET':

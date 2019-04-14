@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import {getData} from '../util.js';
+import {getResponse} from '../util.js';
 
 
 export class CharacterList extends React.Component {
@@ -34,15 +34,7 @@ export class CharacterList extends React.Component {
   }
 
   async fetchCharacters() {
-    try {
-      const response = await getData('GET', '/request_characters/');
-      if (!response.ok) {
-        throw Error(response.statusText);
-      }
-      const json = await response.json();
-      this.setState({characters: json });
-    } catch (error) {
-      console.log(error);
-    }
+    const characters = await getResponse(`/request_characters/`);
+    this.setState({characters});
   }
 }

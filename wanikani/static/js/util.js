@@ -1,4 +1,4 @@
-export function getData(method, url, data={}) {
+export function executeRequest(method, url, data={}) {
   return fetch(url, {
     headers: {
       'Accept': 'application/json',
@@ -7,6 +7,19 @@ export function getData(method, url, data={}) {
     method,
     credentials: 'include',
   });
+}
+
+export async function getResponse(url) {
+  try {
+    const response = await executeRequest('GET', url);
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Helper function to grab cookies, mostly for csrf

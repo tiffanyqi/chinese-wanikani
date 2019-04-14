@@ -5,7 +5,7 @@ import {
   isUserCorrect,
   isWordComplete,
 } from './helpers.js';
-import {generateRandomNumbers, getCookie, getData} from '../util.js';
+import {generateRandomNumbers, getCookie, executeRequest} from '../util.js';
 
 
 $(document).ready(function() {
@@ -35,7 +35,7 @@ $(document).ready(function() {
     }
   });
 
-  getData('GET', characterListURL)
+  executeRequest('GET', characterListURL)
     .then(result => result.json())
     .then(result => {
       window.characters = result;
@@ -49,7 +49,7 @@ $(document).ready(function() {
     .catch(result => console.error('Results of getting current characters is undefined.'));
 
   if (incrementSession) {
-    getData('GET', '/user')
+    executeRequest('GET', '/user')
     .then(result => result.json())
     .then(result => {
       window.session_number = result.last_session + 1;
