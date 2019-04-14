@@ -19,7 +19,7 @@ export class Main extends React.Component {
           />
           <Route
             path='/session/learn'
-            render={(props) => <Learn {...props} user={user} />}
+            component={Learn} />}
           />
           <Route
             path='/characters'
