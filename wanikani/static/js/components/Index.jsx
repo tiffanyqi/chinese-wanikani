@@ -30,8 +30,8 @@ export class Dashboard extends React.Component {
   constructor() {
     super();
     this.state = {
-      charactersAtLevel: [],
       charactersToLearn: [],
+      charactersAtLevel: [],
       charactersToReview: [],
     }
   }
@@ -65,6 +65,7 @@ export class Dashboard extends React.Component {
     );
   }
 
+  // TODO: move this to Main
   async fetchCharactersToLearn() {
     const charactersToLearn = await getResponse(`/request_characters/learn/`);
     this.setState({charactersToLearn});

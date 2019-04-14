@@ -4,9 +4,9 @@ from . import views
 
 urlpatterns = [
     # user pathways
-    path('learn/', views.learn_view, name='learn'),
-    path('review/', views.review_view, name='review'),
-    path('summary/', views.summary_view, name='summary'),
+    # path('learn/', views.learn_view, name='learn'),
+    # path('review/', views.review_view, name='review'),
+    # path('summary/', views.summary_view, name='summary'),
 
     # api pathways
     # TODO: move this to a different folder?
