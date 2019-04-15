@@ -1,26 +1,25 @@
 import React from 'react';
 
-import {CSRFToken} from '../../csrftoken';
-import {SESSION_STATE} from '../../session/constants';
+import {CSRFToken} from '../csrftoken';
+import {SESSION_STATE} from '../session/constants';
 import {
   getKey,
   getRandomCharacter,
   isUserCorrect,
   isWordComplete,
-} from '../../session/helpers';
-import {executeRequest, generateRandomNumbers, getCookie, getResponse} from '../../util';
+} from '../session/helpers';
+import {executeRequest, generateRandomNumbers, getCookie, getResponse} from '../util';
 
 
-export class Learn extends React.Component {
-  constructor() {
-    super();
+export class Session extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       anser: null,
       characterDisplayed: null,
       characterOrder: [],
       characterOrderNumber: null,
       characters: [],
-      incrementSession: false, // from props?
       inputValue: ``,
       session: {},
       sessionNumber: null,
@@ -39,7 +38,7 @@ export class Learn extends React.Component {
 
   componentDidMount() {
     this.fetchCharacters();
-    if (this.state.incrementSession) {
+    if (this.props.incrementSession) {
       this.setState({
         sessionNumber: this.props.user.last_session + 1,
       });
@@ -102,12 +101,11 @@ export class Learn extends React.Component {
 
   handleAnswerSubmitted(ev) {
     ev.preventDefault();
-    const {characterDisplayed, characterOrder, characterOrderNumber, session, sessionNumber, sessionState, typeSelected} = this.state;
+    const {characterDisplayed, characterOrder, characterOrderNumber, inputValue, session, sessionNumber, sessionState, typeSelected} = this.state;
     if ([SESSION_STATE.received, SESSION_STATE.readyToMoveOn].includes(sessionState)) {
       return false;
     }
-    const userInput = document.getElementById('session-character-input').value;
-    const isCorrect = isUserCorrect(userInput, typeSelected, characterDisplayed);
+    const isCorrect = isUserCorrect(inputValue, typeSelected, characterDisplayed);
     const answer = isCorrect ? `you're right!` : `you're not right`;
     const characterString = characterDisplayed.character;
     session[characterString][typeSelected] = isCorrect;
@@ -129,7 +127,7 @@ export class Learn extends React.Component {
     const isComplete = isWordComplete(session[characterString]);
     const areBothCorrect = !!(isComplete && !session[characterString]['incorrect']);
 
-    executeRequest(`POST`, `/session/characters/learn/update/`, {
+    executeRequest(`POST`, `/session/characters/${this.props.sessionType}/update/`, {
       both_correct: areBothCorrect,
       character: characterString,
       is_complete: isComplete,
@@ -186,6 +184,7 @@ export class Learn extends React.Component {
           break;
         case SESSION_STATE.readyToMoveOn:
           this.loadRandomCharacter();
+          document.getElementById('session-character-input').focus();
           break;
       }
     }
@@ -226,7 +225,7 @@ export class Learn extends React.Component {
   }
 
   async fetchCharacters() {
-    const characters = await getResponse(`/session/characters/learn/`);
+    const characters = await getResponse(`/session/characters/${this.props.sessionType}/`);
     this.setState({
       characters,
       characterOrder: generateRandomNumbers(characters.length),

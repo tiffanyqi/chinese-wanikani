@@ -4,7 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 import {Character} from './Character';
 import {CharacterList} from './CharacterList';
 import {Index} from './Index';
-import {Learn} from './session/Learn';
+import {Session} from './Session';
 
 
 export class Main extends React.Component {
@@ -19,7 +19,11 @@ export class Main extends React.Component {
           />
           <Route
             path='/session/learn'
-            render={(props) => <Learn {...props} user={user} />}
+            render={(props) => <Session {...props} incrementSession={false} sessionType="learn" user={user} />}
+          />
+          <Route
+            path='/session/review'
+            render={(props) => <Session {...props} incrementSession={true} sessionType="review" user={user} />}
           />
           <Route
             path='/characters'
