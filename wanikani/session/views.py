@@ -66,7 +66,7 @@ def get_characters_to_learn(request):
 def characters_to_learn(user):
     user = User.objects.get(username=user.username)
     results = (ProgressCharacter.objects.filter(user=user)
-        .filter(Q(last_reviewed_date__isnull=True)))
+        .filter(last_reviewed_date__isnull=True, upcoming_review_date__isnull=False))
     return [model.to_json() for model in results]
 
 
@@ -82,7 +82,6 @@ def update_learned_character(request):
 
 
 def set_character_learned(character, is_complete, user):
-    print(character, is_complete, user)
     now = datetime.datetime.now()
     base_character = BaseCharacter.objects.get(character=character)
     user_object = User.objects.get(username=user.username)
@@ -90,7 +89,6 @@ def set_character_learned(character, is_complete, user):
 
     if is_complete:
         new_level = get_level(character_object)
-        character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
         character_object.save()
         return character_object.to_json()
 

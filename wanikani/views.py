@@ -49,7 +49,7 @@ def characters_to_learn(request):
         now = datetime.datetime.now()
         results = (ProgressCharacter.objects
                 .filter(user=user)
-                .filter(Q(last_reviewed_date__isnull=True))
+                .filter(last_reviewed_date__isnull=True, upcoming_review_date__isnull=False)
         )
         return JsonResponse([model.to_json() for model in results], safe=False)
 

@@ -1,12 +1,12 @@
 export function executeRequest(method, url, body={}) {
   let data = {
+    credentials: 'include',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'X-CSRFToken': getCookie('csrftoken'),
     },
     method,
-    credentials: 'include',
   };
   if (method === `POST`) {
     data = {

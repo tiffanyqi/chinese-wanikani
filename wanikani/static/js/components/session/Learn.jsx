@@ -5,17 +5,19 @@ import {SESSION_STATE} from '../../session/constants';
 import {
   getKey,
   getRandomCharacter,
-  isWordComplete,
   isUserCorrect,
+  isWordComplete,
 } from '../../session/helpers';
-import {generateRandomNumbers, getCookie, getResponse, executeRequest} from '../../util';
+import {executeRequest, generateRandomNumbers, getCookie, getResponse} from '../../util';
 
 
 export class Learn extends React.Component {
   constructor() {
     super();
-    this.directSessionMethod = this.directSessionMethod.bind(this),
-    this.handleInputKeyPress = this.handleInputKeyPress.bind(this),
+    this.directSessionMethod = this.directSessionMethod.bind(this);
+    this.handleAnswerSubmitted = this.handleAnswerSubmitted.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputKeyPress = this.handleInputKeyPress.bind(this);
     this.state = {
       answer: null,
       characterDisplayed: null,
@@ -23,6 +25,7 @@ export class Learn extends React.Component {
       characterOrderNumber: null,
       characters: [],
       incrementSession: false, // from props?
+      inputValue: ``,
       results: null,
       session: {},
       sessionNumber: null,
@@ -44,7 +47,7 @@ export class Learn extends React.Component {
   }
 
   render() {
-    const {characterDisplayed, results, showAnswer, typeSelected} = this.state;
+    const {characterDisplayed, inputValue, results, showAnswer, typeSelected} = this.state;
     let characterResults = [];
     if (this.answerSubmitted()) {
       characterResults = [
@@ -66,13 +69,15 @@ export class Learn extends React.Component {
             <div>{characterDisplayed.character}</div>
             <div>{typeSelected}</div>
           </div>
-          <form onSubmit={(ev) => this.handleAnswerSubmitted(ev)}>
+          <form onSubmit={this.handleAnswerSubmitted}>
             <CSRFToken />
             <input
               autoComplete="off"
+              onChange={this.handleInputChange}
               id="session-character-input"
-              onKeyPress={(ev) => this.handleInputKeyPress(ev)}
+              onKeyPress={this.handleInputKeyPress}
               type="text"
+              value={inputValue}
             />
             <input
               className={this.answerSubmitted() ? "disabled" : null}
@@ -81,7 +86,7 @@ export class Learn extends React.Component {
             />
             <button
               className={this.answerSubmitted() ? null : "disabled"}
-              onClick={(ev) => this.displayAnswer(ev)}
+              onClick={this.displayAnswer}
             >I don't know</button>
             <button
               className={this.answerSubmitted() ? null : "disabled"}
@@ -124,6 +129,10 @@ export class Learn extends React.Component {
     return false;
   }
 
+  handleInputChange(ev) {
+    this.setState({inputValue: ev.target.value});
+  }
+
   handleAnswerSubmitted(ev) {
     ev.preventDefault();
     const {characterDisplayed, characterOrder, characterOrderNumber, session, sessionNumber, sessionState, typeSelected} = this.state;
@@ -150,7 +159,6 @@ export class Learn extends React.Component {
     }
     const isComplete = isWordComplete(session[characterString]);
     const areBothCorrect = !!(isComplete && !session[characterString]['incorrect']);
-
 
     executeRequest(`POST`, `/session/update_learned_character`, {
       both_correct: areBothCorrect,
@@ -203,13 +211,11 @@ export class Learn extends React.Component {
       answer: null,
       character: null,
       characterOrderNumber: null,
+      inputValue: ``,
       results: null,
       sessionState: SESSION_STATE.received,
       typeSelected: null,
     })
-    if (document.getElementById('session-character-input')) {
-      document.getElementById('session-character-input').value = '';
-    }
   }
 
   async fetchCharacters() {
