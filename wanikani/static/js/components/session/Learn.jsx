@@ -52,13 +52,13 @@ export class Learn extends React.Component {
     if (this.answerSubmitted()) {
       characterResults = [
         ...characterResults,
-        <div>{results}</div>,
+        <div key="character-results">{results}</div>,
       ];
     }
     if (showAnswer) {
       characterResults = [
         ...characterResults,
-        <div>{characterDisplayed.pinyin}</div>
+        <div key="character-answer">{characterDisplayed[getKey(typeSelected)]}</div>
       ];
     }
 

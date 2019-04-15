@@ -47,7 +47,10 @@ export class Dashboard extends React.Component {
     const {user} = this.props;
     const charactersAtLevelList = charactersAtLevel.map(char => {
       return (
-        <div className="character-container">
+        <div
+          key={char.character}
+          className="character-container"
+        >
           <div className="character">
             <Link to={`/characters/${char.character}`}>{char.character}</Link>
           </div>

@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 
 export class Header extends React.Component {
   render() {
-    // TODO: keys aren't unique?
     const headerList = [
       <li key="header-index"><Link to="/">Dashboard</Link></li>,
       <li key="header-learn"><Link to="/session/learn">Learn</Link></li>,
