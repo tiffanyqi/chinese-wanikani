@@ -160,7 +160,7 @@ export class Learn extends React.Component {
     const isComplete = isWordComplete(session[characterString]);
     const areBothCorrect = !!(isComplete && !session[characterString]['incorrect']);
 
-    executeRequest(`POST`, `/session/update_learned_character`, {
+    executeRequest(`POST`, `/session/characters/learn/update/`, {
       both_correct: areBothCorrect,
       character: characterString,
       is_complete: isComplete,
@@ -219,7 +219,7 @@ export class Learn extends React.Component {
   }
 
   async fetchCharacters() {
-    const characters = await getResponse(`/request_characters/learn/`);
+    const characters = await getResponse(`/session/characters/learn/`);
     this.setState({
       characters,
       characterOrder: generateRandomNumbers(characters.length),

@@ -38,7 +38,7 @@ export class Character extends React.Component {
   }
 
   async fetchCharacter() {
-    const characterObject = await getResponse(`/request_characters/${this.character}/`);
+    const characterObject = await getResponse(`/session/characters/${this.character}/`);
     this.setState({characterObject});
   }
 }

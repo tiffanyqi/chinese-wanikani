@@ -34,7 +34,7 @@ export class CharacterList extends React.Component {
   }
 
   async fetchCharacters() {
-    const characters = await getResponse(`/request_characters/`);
+    const characters = await getResponse(`/session/characters/`);
     this.setState({characters});
   }
 }

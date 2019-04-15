@@ -45,29 +45,34 @@ def summary_view(request):
 
 
 @require_http_methods(['GET'])
-def get_characters_to_review(request):
+def characters(request):
     if request.method == 'GET':
-        return JsonResponse(characters_to_review(request.user), safe=False)
-
-def characters_to_review(user):
-    user = User.objects.get(username=user.username)
-    now = datetime.datetime.now()
-    results = (ProgressCharacter.objects.filter(user=user)
-        .filter(Q(last_reviewed_date__isnull=False))
-        .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True)))
-    return [model.to_json() for model in results]
+        results = list(BaseCharacter.objects.exclude(user_level=0).order_by('user_level'))
+        return JsonResponse([model.to_json() for model in results], safe=False)
 
 
 @require_http_methods(['GET'])
-def get_characters_to_learn(request):
+def character(request, character):
+    """
+    Provides more information on a single character
+    """
     if request.method == 'GET':
-        return JsonResponse(characters_to_learn(request.user), safe=False)
+        char = BaseCharacter.objects.get(character=character)
+        return JsonResponse(char.to_json(), safe=False)
 
-def characters_to_learn(user):
-    user = User.objects.get(username=user.username)
-    results = (ProgressCharacter.objects.filter(user=user)
-        .filter(last_reviewed_date__isnull=True, upcoming_review_date__isnull=False))
-    return [model.to_json() for model in results]
+
+## CHARACTERS TO LEARN REQUESTS
+
+@require_http_methods(['GET'])
+def characters_to_learn(request):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.user.username)
+        now = datetime.datetime.now()
+        results = (ProgressCharacter.objects
+                .filter(user=user)
+                .filter(last_reviewed_date__isnull=True, upcoming_review_date__isnull=False)
+        )
+        return JsonResponse([model.to_json() for model in results], safe=False)
 
 
 @require_http_methods(['POST'])
@@ -91,6 +96,22 @@ def set_character_learned(character, is_complete, user):
         new_level = get_level(character_object)
         character_object.save()
         return character_object.to_json()
+
+
+## CHARACTERS TO REVIEW REQUESTS
+
+@require_http_methods(['GET'])
+def characters_to_review(request):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.user.username)
+        now = datetime.datetime.now()
+        results = (ProgressCharacter.objects
+                .filter(user=user)
+                .filter(Q(last_reviewed_date__isnull=False))
+                .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True))
+        )
+        return JsonResponse([model.to_json() for model in results], safe=False)
+
 
 @require_http_methods(['POST'])
 def update_reviewed_character(request):
@@ -146,3 +167,13 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
     if check_level_up(user_object):
         level_up(user_object)
     return character_object.to_json()
+
+
+# CURRENT LEVEL CHARACTER REQUESTS
+
+@require_http_methods(['GET'])
+def characters_at_level(request):
+    if request.method == 'GET':
+        user = User.objects.get(username=request.user.username)
+        results = BaseCharacter.objects.filter(user_level=user.level)
+        return JsonResponse([model.to_json() for model in results], safe=False)

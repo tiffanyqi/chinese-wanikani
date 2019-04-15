@@ -67,17 +67,17 @@ export class Dashboard extends React.Component {
 
   // TODO: move this to Main
   async fetchCharactersToLearn() {
-    const charactersToLearn = await getResponse(`/request_characters/learn/`);
+    const charactersToLearn = await getResponse(`/session/characters/learn/`);
     this.setState({charactersToLearn});
   }
 
   async fetchCharactersToReview() {
-    const charactersToReview = await getResponse(`/request_characters/review/`);
+    const charactersToReview = await getResponse(`/session/characters/review/`);
     this.setState({charactersToReview});
   }
 
   async fetchCharactersAtLevel() {
-    const charactersAtLevel = await getResponse(`/request_characters/level/`);
+    const charactersAtLevel = await getResponse(`/session/characters/level/`);
     this.setState({charactersAtLevel});
   }
 }
