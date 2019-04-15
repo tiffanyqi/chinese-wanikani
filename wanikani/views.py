@@ -6,11 +6,13 @@ from django.core.serializers import serialize
 from django.db.models import Q
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_http_methods
 
 from wanikani.models import BaseCharacter, ProgressCharacter, User
 
 
+@ensure_csrf_cookie
 def home(request):
     return render(request, 'wanikani/new-base.html')
 
@@ -29,6 +31,7 @@ def characters(request):
         return JsonResponse([model.to_json() for model in results], safe=False)
 
 
+# TODO: consolidate this with session/views.py
 @require_http_methods(['GET'])
 def character(request, character):
     """

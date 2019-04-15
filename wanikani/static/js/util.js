@@ -1,12 +1,20 @@
-export function executeRequest(method, url, data={}) {
-  return fetch(url, {
+export function executeRequest(method, url, body={}) {
+  let data = {
     headers: {
       'Accept': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
     },
     method,
     credentials: 'include',
-  });
+  };
+  if (method === `POST`) {
+    data = {
+      ...data,
+      body: JSON.stringify(body),
+    }
+  }
+  return fetch(url, data);
 }
 
 export async function getResponse(url) {

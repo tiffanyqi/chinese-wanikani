@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {CSRFToken} from '../../csrftoken';
 import {SESSION_STATE} from '../../session/constants';
 import {
   getKey,
@@ -7,7 +8,7 @@ import {
   isWordComplete,
   isUserCorrect,
 } from '../../session/helpers';
-import {generateRandomNumbers, getCookie, getResponse} from '../../util';
+import {generateRandomNumbers, getCookie, getResponse, executeRequest} from '../../util';
 
 
 export class Learn extends React.Component {
@@ -26,32 +27,35 @@ export class Learn extends React.Component {
       session: {},
       sessionNumber: null,
       showAnswer: false,
-      state: SESSION_STATE.received, // received, answering, answered
+      sessionState: SESSION_STATE.received, // received, answering, answered
       typeSelected: null,
     }
   }
 
   componentDidMount() {
     this.fetchCharacters();
-    // TODO: use prop instead of fetch
-    this.fetchUser();
+    if (this.state.incrementSession) {
+      this.setState({
+        sessionNumber: this.props.user.last_session + 1,
+      });
+    }
 
     document.addEventListener('keyup', this.directSessionMethod);
   }
 
   render() {
-    const {characterDisplayed, results, showAnswer, state, typeSelected} = this.state;
+    const {characterDisplayed, results, showAnswer, typeSelected} = this.state;
     let characterResults = [];
-    if (state === SESSION_STATE.answered) {
+    if (this.answerSubmitted()) {
       characterResults = [
         ...characterResults,
-        <div id="session-character-results">{results}</div>,
+        <div>{results}</div>,
       ];
     }
     if (showAnswer) {
       characterResults = [
         ...characterResults,
-        <div id="session-character-answer">{characterDisplayed.pinyin}</div>
+        <div>{characterDisplayed.pinyin}</div>
       ];
     }
 
@@ -59,10 +63,11 @@ export class Learn extends React.Component {
       return (
         <div className="container">
           <div className="character-display">
-            <div id="session-character-displayed">{characterDisplayed.character}</div>
-            <div id="session-character-type">{typeSelected}</div>
+            <div>{characterDisplayed.character}</div>
+            <div>{typeSelected}</div>
           </div>
-          <div className="character-interaction">
+          <form onSubmit={(ev) => this.handleAnswerSubmitted(ev)}>
+            <CSRFToken />
             <input
               autoComplete="off"
               id="session-character-input"
@@ -70,23 +75,19 @@ export class Learn extends React.Component {
               type="text"
             />
             <input
-              className={state !== SESSION_STATE.answered ? null : "disabled"}
-              id="session-character-submit"
-              onClick={() => this.handleAnswerSubmitted()}
-              type="button"
-              value="Submit"
+              className={this.answerSubmitted() ? "disabled" : null}
+              readOnly="Submit"
+              type="Submit"
             />
             <button
-              className={state === SESSION_STATE.answered ? null : "disabled"}
-              id="session-character-get-answer"
-              onClick={() => this.displayAnswer()}
+              className={this.answerSubmitted() ? null : "disabled"}
+              onClick={(ev) => this.displayAnswer(ev)}
             >I don't know</button>
             <button
-              id="session-character-get-new-character"
-              className={state === SESSION_STATE.answered ? null : "disabled"}
+              className={this.answerSubmitted() ? null : "disabled"}
               onClick={()=> this.loadRandomCharacter()}
             >Get another character</button>
-          </div>
+          </form>
           {characterResults}
         </div>
       );
@@ -97,6 +98,10 @@ export class Learn extends React.Component {
     }
   }
 
+  answerSubmitted() {
+    return this.state.sessionState === SESSION_STATE.answered;
+  }
+  
   loadRandomCharacter(ev) {
     if (ev && ev.currentTarget.className === 'disabled') {
       ev.stopPropagation();
@@ -119,9 +124,10 @@ export class Learn extends React.Component {
     return false;
   }
 
-  handleAnswerSubmitted() {
-    const {characterDisplayed, characterOrder, characterOrderNumber, session, state, typeSelected} = this.state;
-    if (state === SESSION_STATE.received) {
+  handleAnswerSubmitted(ev) {
+    ev.preventDefault();
+    const {characterDisplayed, characterOrder, characterOrderNumber, session, sessionNumber, sessionState, typeSelected} = this.state;
+    if (sessionState === SESSION_STATE.received) {
       return false;
     }
     const userInput = document.getElementById('session-character-input').value;
@@ -130,7 +136,7 @@ export class Learn extends React.Component {
     // TODO: set state once
     this.setState({
       results,
-      state: SESSION_STATE.answered,
+      sessionState: SESSION_STATE.answered,
     });
   
     const characterString = characterDisplayed.character;
@@ -144,16 +150,15 @@ export class Learn extends React.Component {
     }
     const isComplete = isWordComplete(session[characterString]);
     const areBothCorrect = !!(isComplete && !session[characterString]['incorrect']);
-  
-    // TODO: remove jquery
-    $.post(`/session/learn_character_list`, {
+
+
+    executeRequest(`POST`, `/session/update_learned_character`, {
       both_correct: areBothCorrect,
       character: characterString,
       is_complete: isComplete,
       is_correct: isCorrect,
       session_number: sessionNumber,
       type: getKey(typeSelected),
-      'csrfmiddlewaretoken': getCookie('csrftoken'),
     });
     return false;
   }
@@ -172,12 +177,12 @@ export class Learn extends React.Component {
   directSessionMethod(ev) {
     ev.preventDefault();
     if (ev.keyCode === 13) { // enter
-      switch(this.state.state) {
+      switch(this.state.sessionState) {
         case SESSION_STATE.received:
           document.getElementById('session-character-input').focus();
           break;
         case SESSION_STATE.answering:
-          this.handleAnswerSubmitted();
+          this.handleAnswerSubmitted(ev);
           break;
         case SESSION_STATE.answered:
           this.loadRandomCharacter();
@@ -188,7 +193,7 @@ export class Learn extends React.Component {
 
   handleInputKeyPress(ev) {
     if (ev.currentTarget.value && ev.keyCode !== 13) {
-      this.setState({state: SESSION_STATE.answering});
+      this.setState({sessionState: SESSION_STATE.answering});
     }
   }
 
@@ -199,7 +204,7 @@ export class Learn extends React.Component {
       character: null,
       characterOrderNumber: null,
       results: null,
-      state: SESSION_STATE.received,
+      sessionState: SESSION_STATE.received,
       typeSelected: null,
     })
     if (document.getElementById('session-character-input')) {
@@ -215,16 +220,6 @@ export class Learn extends React.Component {
     });
     if (characters.length) {
       this.loadRandomCharacter();
-    }
-  }
-
-  async fetchUser() {
-    const user = await getResponse(`/user/`);
-    if (this.state.incrementSession) {
-      // TODO: get the actual session number
-      this.setState({
-        sessionNumber: user.last_session + 1,
-      });
     }
   }
 }

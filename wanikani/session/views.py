@@ -73,13 +73,16 @@ def characters_to_learn(user):
 @require_http_methods(['POST'])
 def update_learned_character(request):
     if request.method == 'POST':
+        body = json.loads(request.body)
         return JsonResponse(set_character_learned(
-            request.POST.get('character'),
-            json.loads(request.POST.get('is_complete')),
+            body.get('character'),
+            body.get('is_complete'),
             request.user,
         ), safe=False)
 
+
 def set_character_learned(character, is_complete, user):
+    print(character, is_complete, user)
     now = datetime.datetime.now()
     base_character = BaseCharacter.objects.get(character=character)
     user_object = User.objects.get(username=user.username)
