@@ -21,7 +21,7 @@ export class Session extends React.Component {
       characterDisplayed: null,
       characterOrder: [],
       characterOrderNumber: null,
-      characters: [],
+      characters: null, // TODO: fix fetch requests to turn this into an array
       inputValue: ``,
       session: {},
       sessionNumber: null,
@@ -46,51 +46,62 @@ export class Session extends React.Component {
 
   render() {
     const {answer, characterDisplayed, characters, inputValue, showAnswer, typeSelected} = this.state;
-    if (characterDisplayed) {
-      return (
-        <div className="container">
-          <div className="character-display">
-            <div>{characterDisplayed.character}</div>
-            <div>{typeSelected}</div>
+    if (characters) {
+      if (!characters.length) {
+        return (
+          <SessionSummary />
+        );
+      }
+      if (characterDisplayed) {
+        return (
+          <div className="container">
+            <div className="character-display">
+              <div>{characterDisplayed.character}</div>
+              <div>{typeSelected}</div>
+            </div>
+            <form onSubmit={this.handleAnswerSubmitted}>
+              <CSRFToken />
+              <input
+                autoComplete="off"
+                onChange={this.handleInputChange}
+                id="session-character-input"
+                onKeyPress={this.handleInputKeyPress}
+                type="text"
+                value={inputValue}
+              />
+              <input
+                className={this.answerSubmitted() ? "disabled" : null}
+                onClick={this.handleAnswerSubmitted}
+                readOnly="Submit"
+                type="Submit"
+              />
+              <button
+                className={this.answerSubmitted() ? null : "disabled"}
+                onClick={this.handleDisplayAnswer}
+              >I don't know</button>
+              <button
+                className={this.answerSubmitted() ? null : "disabled"}
+                onClick={this.handleLoadRandomCharacter}
+              >Get another character</button>
+            </form>
+            {this.answerSubmitted() &&
+              <div key="character-results">{answer}</div>
+            }
+            {showAnswer &&
+              <div key="character-answer">{characterDisplayed[getKey(typeSelected)]}</div>
+            }
           </div>
-          <form onSubmit={this.handleAnswerSubmitted}>
-            <CSRFToken />
-            <input
-              autoComplete="off"
-              onChange={this.handleInputChange}
-              id="session-character-input"
-              onKeyPress={this.handleInputKeyPress}
-              type="text"
-              value={inputValue}
-            />
-            <input
-              className={this.answerSubmitted() ? "disabled" : null}
-              onClick={this.handleAnswerSubmitted}
-              readOnly="Submit"
-              type="Submit"
-            />
-            <button
-              className={this.answerSubmitted() ? null : "disabled"}
-              onClick={this.handleDisplayAnswer}
-            >I don't know</button>
-            <button
-              className={this.answerSubmitted() ? null : "disabled"}
-              onClick={this.handleLoadRandomCharacter}
-            >Get another character</button>
-          </form>
-          {this.answerSubmitted() &&
-            <div key="character-results">{answer}</div>
-          }
-          {showAnswer &&
-            <div key="character-answer">{characterDisplayed[getKey(typeSelected)]}</div>
-          }
-        </div>
-      );
+        );
+      } else {
+        return (
+          <div>Loading</div>
+        );
+      }
     } else {
       // TODO: better loading
       return (
         <div>Loading</div>
-      )
+      );
     }
   }
 
