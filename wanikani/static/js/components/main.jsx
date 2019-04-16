@@ -5,6 +5,7 @@ import {Character} from './Character';
 import {CharacterList} from './CharacterList';
 import {Index} from './Index';
 import {Session} from './Session';
+import {SessionSummary} from './SessionSummary';
 
 
 export class Main extends React.Component {
@@ -24,6 +25,10 @@ export class Main extends React.Component {
           <Route
             path='/session/review'
             render={(props) => <Session {...props} incrementSession={true} sessionType="review" user={user} />}
+          />
+          <Route
+            path='/session/summary'
+            render={(props) => <SessionSummary {...props} user={user} />}
           />
           <Route
             path='/characters'

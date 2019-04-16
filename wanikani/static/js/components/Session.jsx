@@ -1,5 +1,7 @@
 import React from 'react';
 
+import {SessionSummary} from './SessionSummary';
+
 import {CSRFToken} from '../csrftoken';
 import {SESSION_STATE} from '../session/constants';
 import {
@@ -38,17 +40,12 @@ export class Session extends React.Component {
 
   componentDidMount() {
     this.fetchCharacters();
-    if (this.props.incrementSession) {
-      this.setState({
-        sessionNumber: this.props.user.last_session + 1,
-      });
-    }
 
     document.addEventListener('keyup', this.handleSessionState);
   }
 
   render() {
-    const {answer, characterDisplayed, inputValue, showAnswer, typeSelected} = this.state;
+    const {answer, characterDisplayed, characters, inputValue, showAnswer, typeSelected} = this.state;
     if (characterDisplayed) {
       return (
         <div className="container">
@@ -226,10 +223,19 @@ export class Session extends React.Component {
 
   async fetchCharacters() {
     const characters = await getResponse(`/session/characters/${this.props.sessionType}/`);
-    this.setState({
+    // TODO: move this all out somewhere
+    const {incrementSession, user} = this.props;
+    let state = {
       characters,
       characterOrder: generateRandomNumbers(characters.length),
-    });
+    };
+    if (incrementSession) {
+      state = {
+        ...state,
+        sessionNumber: user.last_session + 1,
+      };
+    }
+    this.setState(state);
     if (characters.length) {
       this.loadRandomCharacter();
     }
