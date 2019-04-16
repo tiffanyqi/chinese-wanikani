@@ -26,9 +26,10 @@ CREATE ROLE username WITH PASSWORD 'password';
 - create a user! This will automatically create ProgressCharacters for you.
 
 # Running the app
-- `pipenv shell` creates the virtual environment for you 
-- `npm run dev` runs webpack
-- `python3 manage.py runserver`, runs the server, will show up as localhost:8000
+- `pipenv shell` creates the virtual environment for you with everything installed ideally
+- create two windows or screens with one in the following:
+- `npm run watch` runs webpack in watch mode, manually refresh the browser to view changes
+- `python3 manage.py runserver`, runs the server, will show up as localhost:8000 (run this in the virtual environment)
 
 # Schema:
 - Each character has its own information based on the full JSON dictionary and various information from the user

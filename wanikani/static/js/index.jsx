@@ -1,8 +1,13 @@
-const React = require('react');
-const ReactDOM = require("react-dom");
-import {App} from './app';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
+
+import {App} from './components/App';
+
 
 ReactDOM.render(
-    <App/>,
-    document.getElementById('react-app')
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    document.getElementById('wanikani-app')
 );

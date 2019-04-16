@@ -1,12 +1,33 @@
-export function getData(method, url, data={}) {
-  return fetch(url, {
+export function executeRequest(method, url, body={}) {
+  let data = {
+    credentials: 'include',
     headers: {
       'Accept': 'application/json',
-      'X-Requested-With': 'XMLHttpRequest'
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
     },
     method,
-    credentials: 'include',
-  });
+  };
+  if (method === `POST`) {
+    data = {
+      ...data,
+      body: JSON.stringify(body),
+    }
+  }
+  return fetch(url, data);
+}
+
+export async function getResponse(url) {
+  try {
+    const response = await executeRequest('GET', url);
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Helper function to grab cookies, mostly for csrf
