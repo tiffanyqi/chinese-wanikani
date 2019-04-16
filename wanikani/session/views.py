@@ -107,8 +107,7 @@ def characters_to_review(request):
         now = datetime.datetime.now()
         results = (ProgressCharacter.objects
                 .filter(user=user)
-                .filter(Q(last_reviewed_date__isnull=False))
-                .filter(Q(upcoming_review_date__lte=now) | Q(upcoming_review_date__isnull=True))
+                .filter(Q(upcoming_review_date__lte=now))
         )
         return JsonResponse([model.to_json() for model in results], safe=False)
 
