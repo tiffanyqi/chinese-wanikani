@@ -13,11 +13,27 @@ import {
 import {executeRequest, generateRandomNumbers, getCookie, getResponse} from '../util';
 
 
+export class Learn extends React.Component {
+  render() {
+    return (
+      <Session incrementSession={false} sessionType="learn" user={this.props.user} />
+    )
+  }
+}
+
+export class Review extends React.Component {
+  render() {
+    return (
+      <Session incrementSession={true} sessionType="review" user={this.props.user} />
+    )
+  }
+}
+
 export class Session extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      anser: null,
+      answer: null,
       characterDisplayed: null,
       characterOrder: [],
       characterOrderNumber: null,
