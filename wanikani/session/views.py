@@ -94,6 +94,7 @@ def set_character_learned(character, is_complete, user):
 
     if is_complete:
         new_level = get_level(character_object)
+        character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
         character_object.save()
         return character_object.to_json()
 
@@ -115,14 +116,15 @@ def characters_to_review(request):
 @require_http_methods(['POST'])
 def update_reviewed_character(request):
     if request.method == 'POST':
+        body = json.loads(request.body)
         return JsonResponse(update_character(
-            json.loads(request.POST.get('both_correct')),
-            request.POST.get('character'),
-            json.loads(request.POST.get('is_complete')),
-            json.loads(request.POST.get('is_correct')),
-            request.POST.get('type'),
+            body.get('both_correct'),
+            body.get('character'),
+            body.get('is_complete'),
+            body.get('is_correct'),
+            body.get('type'),
             request.user,
-            json.loads(request.POST.get('session_number')),
+            body.get('session_number'),
         ), safe=False)
 
 def update_character(both_correct, character, is_complete, is_correct, type, user, session_number):
