@@ -10,7 +10,7 @@ import {
   isUserCorrect,
   isWordComplete,
 } from '../session/helpers';
-import {executeRequest, generateRandomNumbers, getCookie, getResponse} from '../util';
+import {executeRequest, generateRandomNumbers, getResponse} from '../util';
 
 
 export class Learn extends React.Component {
