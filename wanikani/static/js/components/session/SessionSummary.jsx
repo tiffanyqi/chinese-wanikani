@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getResponse} from '../util.js';
+import {getResponse} from '../../util';
 
 
 export class SessionSummary extends React.Component {

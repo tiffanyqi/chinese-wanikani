@@ -2,15 +2,15 @@ import React from 'react';
 
 import {SessionSummary} from './SessionSummary';
 
-import {CSRFToken} from '../csrftoken';
-import {SESSION_STATE} from '../session/constants';
+import {SESSION_STATE} from './constants';
 import {
   getKey,
   getRandomCharacter,
   isUserCorrect,
   isWordComplete,
-} from '../session/helpers';
-import {executeRequest, generateRandomNumbers, getResponse} from '../util';
+} from './helpers';
+import {CSRFToken} from '../../csrftoken';
+import {executeRequest, generateRandomNumbers, getResponse} from '../../util';
 
 
 export class Learn extends React.Component {
