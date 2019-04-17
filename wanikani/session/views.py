@@ -3,45 +3,11 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from wanikani.models import BaseCharacter, ProgressCharacter, User
 from wanikani.session.util import check_level_up, get_level, get_upcoming_review_date, level_up
-
-@login_required
-def review_view(request):
-    """
-    Begins a review session.
-    """
-    return render(request, 'wanikani/session/review.html')
-
-
-@login_required
-def learn_view(request):
-    """
-    Begins a learn session.
-    """
-    return render(request, 'wanikani/session/learn.html',)
-
-
-@login_required
-def summary_view(request):
-    """
-    Displays a summary from the previous review or learn.
-    """
-    user = User.objects.get(username=request.user.username)
-    last_characters_reviewed = (ProgressCharacter.objects.filter(user=user)
-        .filter(last_session=user.last_session))
-    correct_characters = last_characters_reviewed.filter(last_correct=True)
-    incorrect_characters = last_characters_reviewed.filter(last_correct=False)
-    context = {
-        'correct_characters': correct_characters,
-        'incorrect_characters': incorrect_characters,
-        'last_session': user.last_session,
-    }
-    return render(request, 'wanikani/session/summary.html', context)
 
 
 @require_http_methods(['GET'])
