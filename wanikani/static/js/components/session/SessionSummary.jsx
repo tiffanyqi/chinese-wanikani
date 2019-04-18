@@ -1,7 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
-import {getResponse} from '../util.js';
+import {getResponse} from '../../util';
 
 
 export class SessionSummary extends React.Component {
@@ -12,16 +11,22 @@ export class SessionSummary extends React.Component {
       charactersIncorrect: [],
       user: null,
     }
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchCorrectCharacters();
     this.fetchIncorrectCharacters();
     this.fetchUser();
   }
 
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
-    let {correctCharacters, incorrectCharacters, user} = this.state;
+    let {charactersCorrect, charactersIncorrect, user} = this.state;
     let sessionSummary = [];
     if (user) {
       if (user.last_session === 0) {
@@ -29,12 +34,12 @@ export class SessionSummary extends React.Component {
           <div key="session-first">Your session summary will appear here!</div>
         ];
       } else {
-        incorrectCharacters.map(char => {
-          <div key={char.character}>{char.character.character}</div>
+        const incorrectCharacters = charactersIncorrect.map(char => {
+          return <div key={char.character}>{char.character}</div>;
         });
-        correctCharacters.map(char => {
-          <div key={char.character}>{char.character.character}</div>
-        })
+        const correctCharacters = charactersCorrect.map(char => {
+          return <div key={char.character}>{char.character}</div>;
+        });
         sessionSummary = [
           <div key="characters-incorrect">
             <h2>Incorrect</h2>
@@ -62,16 +67,22 @@ export class SessionSummary extends React.Component {
 
   async fetchCorrectCharacters() {
     const charactersCorrect = await getResponse(`/session/characters/correct/`);
-    this.setState({charactersCorrect});
+    if (this._isMounted) {
+      this.setState({charactersCorrect});
+    }
   }
 
   async fetchIncorrectCharacters() {
     const charactersIncorrect = await getResponse(`/session/characters/incorrect/`);
-    this.setState({charactersIncorrect});
+    if (this._isMounted) {
+      this.setState({charactersIncorrect});
+    }
   }
 
   async fetchUser() {
     const user = await getResponse(`/user/`);
-    this.setState({user});
+    if (this._isMounted) {
+      this.setState({user});
+    }
   }
 }

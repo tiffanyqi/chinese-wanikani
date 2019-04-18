@@ -2,21 +2,21 @@ import React from 'react';
 
 import {SessionSummary} from './SessionSummary';
 
-import {CSRFToken} from '../csrftoken';
-import {SESSION_STATE} from '../session/constants';
+import {SESSION_STATE} from './constants';
 import {
   getKey,
   getRandomCharacter,
   isUserCorrect,
   isWordComplete,
-} from '../session/helpers';
-import {executeRequest, generateRandomNumbers, getCookie, getResponse} from '../util';
+} from './helpers';
+import {CSRFToken} from '../../csrftoken';
+import {executeRequest, generateRandomNumbers, getResponse} from '../../util';
 
 
 export class Learn extends React.Component {
   render() {
     return (
-      <Session incrementSession={false} sessionType="learn" user={this.props.user} />
+      <Session incrementSession={false} sessionType="learn" showSummary={false} user={this.props.user} />
     )
   }
 }
@@ -24,7 +24,7 @@ export class Learn extends React.Component {
 export class Review extends React.Component {
   render() {
     return (
-      <Session incrementSession={true} sessionType="review" user={this.props.user} />
+      <Session incrementSession={true} showSummary={true} sessionType="review" user={this.props.user} />
     )
   }
 }
@@ -79,8 +79,8 @@ export class Session extends React.Component {
               <CSRFToken />
               <input
                 autoComplete="off"
-                onChange={this.handleInputChange}
                 id="session-character-input"
+                onChange={this.handleInputChange}
                 onKeyPress={this.handleInputKeyPress}
                 type="text"
                 value={inputValue}
@@ -107,6 +107,10 @@ export class Session extends React.Component {
               <div key="character-answer">{characterDisplayed[getKey(typeSelected)]}</div>
             }
           </div>
+        );
+      } else if (this.props.showSummary) {
+        return (
+          <SessionSummary />
         );
       } else {
         return (
@@ -194,10 +198,13 @@ export class Session extends React.Component {
   }
 
   handleSessionState(ev) {
+    const {characterDisplayed, sessionState} = this.state;
     if (ev.keyCode === 13) { // enter
-      switch(this.state.sessionState) {
+      switch(sessionState) {
         case SESSION_STATE.received:
-          document.getElementById('session-character-input').focus();
+          if (characterDisplayed) {
+            document.getElementById('session-character-input').focus();
+          }
           break;
         case SESSION_STATE.answering:
           this.handleAnswerSubmitted(ev);
@@ -225,15 +232,17 @@ export class Session extends React.Component {
     this.clearFields();
     const {characters, characterOrder, session} = this.state;
     let {character, number, type} = getRandomCharacter(characters, characterOrder);
-    if (!session[character.character]) {
-      session[character.character] = {'incorrect': false};
+    if (character) {
+      if (!session[character.character]) {
+        session[character.character] = {'incorrect': false};
+      }
+      this.setState({
+        characterDisplayed: character,
+        characterOrderNumber: number,
+        session,
+        typeSelected: type,
+      });
     }
-    this.setState({
-      characterDisplayed: character,
-      characterOrderNumber: number,
-      session,
-      typeSelected: type,
-    });
   }
 
   clearFields() {

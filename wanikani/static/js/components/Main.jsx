@@ -4,7 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 import {Character} from './Character';
 import {CharacterList} from './CharacterList';
 import {Index} from './Index';
-import {Learn, Review, Session} from './Session';
+import {Learn, Review} from './session/Session';
 
 
 export class Main extends React.Component {
