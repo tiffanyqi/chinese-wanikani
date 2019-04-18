@@ -153,12 +153,12 @@ def last_characters_reviewed(user):
 def last_session_characters_correct(request):
     if request.method == 'GET':
         user = User.objects.get(username=request.user.username)
-        results = last_characters_reviewed(user).filter(last_correct=False)
+        results = last_characters_reviewed(user).filter(last_correct=True)
         return JsonResponse([model.to_json() for model in results], safe=False)
 
 @require_http_methods(['GET'])
 def last_session_characters_incorrect(request):
     if request.method == 'GET':
         user = User.objects.get(username=request.user.username)
-        results = last_characters_reviewed(user).filter(last_correct=True)
+        results = last_characters_reviewed(user).filter(last_correct=False)
         return JsonResponse([model.to_json() for model in results], safe=False)
