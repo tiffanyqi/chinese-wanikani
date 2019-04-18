@@ -115,7 +115,7 @@ export class Session extends React.Component {
       } else {
         return (
           <div>Loading</div>
-        );        
+        );
       }
     } else {
       // TODO: better loading
@@ -261,7 +261,6 @@ export class Session extends React.Component {
     const characters = await getResponse(`/session/characters/${this.props.sessionType}/`);
     // TODO: move this all out somewhere
     const {incrementSession, user} = this.props;
-    console.log(user);
     let state = {
       characters,
       characterOrder: generateRandomNumbers(characters.length),
