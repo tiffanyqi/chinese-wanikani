@@ -110,6 +110,7 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
     user_object = User.objects.get(username=user.username)
     character_object = ProgressCharacter.objects.get(character=base_character, user=user_object)
     if is_complete:
+        new_level = get_level(character_object)
         character_object.num_times_shown += 1
         character_object.last_reviewed_date = now
         character_object.upcoming_review_date = get_upcoming_review_date(now, new_level)
@@ -125,7 +126,6 @@ def update_character(both_correct, character, is_complete, is_correct, type, use
         character_object.num_current_incorrect[type] += 1
 
     if both_correct:
-        new_level = get_level(character_object)
         character_object.num_correct['all'] += 1
 
     character_object.save()
