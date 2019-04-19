@@ -1,0 +1,47 @@
+Guangzhou   广州    guang3zhou1 Capital city of Guangdong Province.
+Shanghai	上海    shang4hai3  Municipality in Southeast China.
+Chongqing	重庆    chong2qing5 Municipality in Southwest China.
+Beijing	北京    bei3jing1   Capital city of China.
+Hangzhou	杭州    hang2zhou1  Capital city of Zhejiang Province.
+Wuhan	武汉    wu3han4 Capital city of Hubei Province.
+Chengdu	成都    cheng2du1   Capital city of Sichuan province.
+Tianjin	天津    tian1jin1   Seaport on the coast of the Bohai Sea.
+Xi'an	西安    xi1an1  Capital city of Shaanxi Province in northwest China.
+Jinan	济南    ji3nan2 Capital city of Shandong Province in northeast China.
+Shenzhen	深圳    shen1zhen4  Major city in Guangdong.
+Nanjing	南京    nan2jing1   Capital city of Jiangsu Province, the capital of China in the past.
+Shenyang	沈阳    shen3yang2  Capital city of Liaoning province.
+Harbin	哈尔滨  ha1er3bin1  Capital of Heilongjiang province.
+Shantou	汕头    shan4tou2  Prefecture level city in Guangdong.
+Suzhou	苏州    su1zhou1    City in Jiangsu province.
+Dongguan	东莞    dong1guan3  Prefecture level city in Guangdong.
+Wenzhou	温州    wen1zhou1   Prefecture in Zhejiang.
+Qingdao	青岛    qing1dao3   Subprovincial city in Shangdong.
+Quanzhou	泉州    quan4dao3   Prefecture level city in Fujian.
+Changsha	长沙    chang2sha1  Capital city of Hunan province in south central China.
+Foshan	佛山    fo2shan1    Prefecture leel city in Guangdong
+Zhengzhou	郑州    zheng4zhou1 Capital city of Henan province.
+Fuzhou	福州    fu2zhou1    Capital city of Fujian province.
+Nanchang	南昌    nan2chang1  Capital of Jiangxi Province.
+Dalian	大连	da4lian2    Dalian subprovincial city in Liaoning province in northeast China.
+Taiyuan	太原    tai4yuan2   Capital city of Shanxi province in central north China.
+Shijiazhuang	石家庄  shi2jia1zhaung1 Capital city of Hebei Province in north China.
+Kunming 昆明    kun1ming2   Capital city of Yunnan Province.
+Guangdong   广东省  guang3dong1heng3   Special economic zone close to Hong Kong.
+Jiangxi 江西省  jiang1xi1sheng3
+Liaoning    辽宁省  liao2ning2sheng3
+Shanxi  山西省  shan1xi1sheng3
+Hebei   河北省  he2bei3sheng3
+Yunnan  云南省  yun2nan2sheng3
+Zhejiang    浙江省  zhe4jiang1sheng3
+Hubei   湖北省  hu2bei3sheng3
+Sichuan 四川省  si4chuan1sheng3
+Shaanxi 陕西省  shan3xi1sheng3
+Shandong    山东省  shan1dong1sheng3
+Heilongjiang    黑龙江省    hei1long2jiang1sheng3
+Jiangsu 江苏省  jiang1su1sheng3
+Fujian  福建省  fu2jian4sheng3
+Hunan   湖南省  hu2nan2sheng3
+Henan   河南省  he2nan2sheng3
+Cantonese   广东话  guang3dong1hua4
+Shanghainese    上海话  shang4hai3hua4

@@ -4,10 +4,11 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 
 - Based on the HSK, or the Chinese Proficiency Test, which covers 2663 characters and 5000 vocabulary words. This represents 97.97% of everyday written language according to the Hutong School.
 - Individual character and frequency data from http://lingua.mtsu.edu/chinese-computing/statistics/char/list.php?Which=MO
-- Radical data: https://www.yellowbridge.com/chinese/radicals.php
+- Radical data from https://www.yellowbridge.com/chinese/radicals.php
 - HSK data from http://huamake.com/1to6Lists.htm
 - Dictionary data from https://www.mdbg.net/chinese/dictionary?page=cedict
 - Other character data from http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string, which came from http://www.unicode.org/charts/unihan.html
+- City and province data from https://en.wikipedia.org/wiki/List_of_cities_in_China_by_population_and_built-up_area
 
 # Initializing the app
 - Ensure you have python 3.7
