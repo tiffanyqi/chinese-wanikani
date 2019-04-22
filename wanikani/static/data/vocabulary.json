@@ -1,4 +1,172 @@
 {
+  "香港": {
+    "pinyin": "xiang1 gang3",
+    "definition": "Hong Kong",
+    "type": "vocabulary",
+    "level": 40
+  },
+  "台湾": {
+    "pinyin": "tai2 wan1",
+    "definition": "Taiwan",
+    "type": "vocabulary",
+    "level": 40
+  },
+  "上海话": {
+    "pinyin": "shang4 hai3 hua4",
+    "definition": "Shanghainese",
+    "type": "vocabulary",
+    "level": 15
+  },
+  "广东话": {
+    "pinyin": "guang3 dong1 hua4",
+    "definition": "Cantonese",
+    "type": "vocabulary",
+    "level": 17
+  },
+  "河南": {
+    "pinyin": "he2 nan2",
+    "definition": "Henan",
+    "type": "vocabulary",
+    "level": 11
+  },
+  "湖南": {
+    "pinyin": "hu2 nan2",
+    "definition": "Hunan",
+    "type": "vocabulary",
+    "level": 40
+  },
+  "江苏": {
+    "pinyin": "jiang1 su1",
+    "definition": "Jiangsu",
+    "type": "vocabulary",
+    "level": 18
+  },
+  "黑龙江": {
+    "pinyin": "hei1 long2 jiang1",
+    "definition": "Heilongjiang",
+    "type": "vocabulary",
+    "level": 27
+  },
+  "山东": {
+    "pinyin": "shan1 dong1",
+    "definition": "Shandong",
+    "type": "vocabulary",
+    "level": 10
+  },
+  "四川": {
+    "pinyin": "si4 chuan1",
+    "definition": "Sichuan",
+    "type": "vocabulary",
+    "level": 41
+  },
+  "云南": {
+    "pinyin": "yun2 nan2",
+    "definition": "Yunnan",
+    "type": "vocabulary",
+    "level": 12
+  },
+  "河北": {
+    "pinyin": "he2 bei3",
+    "definition": "Hebei",
+    "type": "vocabulary",
+    "level": 11
+  },
+  "江西": {
+    "pinyin": "jiang1 xi1",
+    "definition": "Jiangxi",
+    "type": "vocabulary",
+    "level": 18
+  },
+  "广东": {
+    "pinyin": "guang3 dong1",
+    "definition": "Guangdong",
+    "type": "vocabulary",
+    "level": 17
+  },
+  "昆明": {
+    "pinyin": "kun1 ming2",
+    "definition": "Kunming",
+    "type": "vocabulary",
+    "level": 46
+  },
+  "石家庄": {
+    "pinyin": "shi2 jia1 zhaung1",
+    "definition": "Shijiazhuang",
+    "type": "vocabulary",
+    "level": 40
+  },
+  "南昌": {
+    "pinyin": "nan2 chang1",
+    "definition": "Nanchang",
+    "type": "vocabulary",
+    "level": 44
+  },
+  "郑州": {
+    "pinyin": "zheng4 zhou1",
+    "definition": "Zhengzhou",
+    "type": "vocabulary",
+    "level": 41
+  },
+  "长沙": {
+    "pinyin": "chang2 sha1",
+    "definition": "Changsha",
+    "type": "vocabulary",
+    "level": 20
+  },
+  "青岛": {
+    "pinyin": "qing1 dao3",
+    "definition": "Qingdao",
+    "type": "vocabulary",
+    "level": 28
+  },
+  "哈尔滨": {
+    "pinyin": "ha1er3 bin1",
+    "definition": "Harbin",
+    "type": "vocabulary",
+    "level": 53
+  },
+  "南京": {
+    "pinyin": "nan2 jing1",
+    "definition": "Nanjing",
+    "type": "vocabulary",
+    "level": 10
+  },
+  "济南": {
+    "pinyin": "ji3 nan2",
+    "definition": "Jinan",
+    "type": "vocabulary",
+    "level": 16
+  },
+  "成都": {
+    "pinyin": "cheng2 du1",
+    "definition": "Chengdu",
+    "type": "vocabulary",
+    "level": 9
+  },
+  "重庆": {
+    "pinyin": "chong2 qing5",
+    "definition": "Chongqing",
+    "type": "vocabulary",
+    "level": 31
+  },
+  "上海": {
+    "pinyin": "shang4 hai3",
+    "definition": "Shanghai",
+    "type": "vocabulary",
+    "level": 15
+  },
+  "广州": {
+    "pinyin": "guang3 zhou1",
+    "definition": "Guangzhou",
+    "type": "vocabulary",
+    "level": 40
+  },
+  "面包": {
+    "pinyin": "mian4bao1",
+    "definition": "Bread",
+    "type": "vocabulary",
+    "level": 11
+  },
   "红烧肉": {
     "pinyin": "hong2 shao1 rou4",
     "definition": "Red braised pork",
@@ -656,12 +824,9 @@
   },
   "北京": {
     "pinyin": "bei3 jing1",
-    "definition": [
-      "Beijing (Peking)"
-    ],
+    "definition": "Beijing",
     "type": "vocabulary",
-    "level": 3,
-    "hsk_level": "hsk1"
+    "level": 3
   },
   "太": {
     "pinyin": "tai4",

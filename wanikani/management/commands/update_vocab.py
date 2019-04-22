@@ -20,6 +20,7 @@ class Command(BaseCommand):
     def extract_characters(self):
       self.extract_hsk()
       self.extract_food()
+      self.extract_locations()
 
     def extract_hsk(self):
       with open('wanikani/static/data/sources/hsk-vocabulary.txt', 'r') as file:
@@ -42,6 +43,19 @@ class Command(BaseCommand):
           if self.check_character_stored(chinese):
             definition = split_line[0]
             pinyin = split_line[5]
+            data[chinese] = self.get_data(pinyin, definition, chinese)
+          else:
+            print(chinese, "not in database")
+
+
+    def extract_locations(self):
+      with open('wanikani/static/data/sources/geography.txt', 'r') as file:
+        for line in file.read().split('\n'):
+          split_line = line.split('\t')
+          chinese = split_line[1]
+          if self.check_character_stored(chinese):
+            definition = split_line[0]
+            pinyin = split_line[2]
             data[chinese] = self.get_data(pinyin, definition, chinese)
           else:
             print(chinese, "not in database")
