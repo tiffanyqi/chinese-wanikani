@@ -18,6 +18,10 @@ class Command(BaseCommand):
       self.dump_json()
 
     def extract_characters(self):
+      self.extract_hsk()
+      self.extract_food()
+
+    def extract_hsk(self):
       with open('wanikani/static/data/sources/hsk-vocabulary.txt', 'r') as file:
         for line in file.read().split('\n'):
           split_line = line.split('\t')
@@ -26,13 +30,31 @@ class Command(BaseCommand):
             pinyin = split_line[2]
             definition = re.split('; | • ', split_line[3])
             hsk_level = split_line[4]
-            data[vocabulary] = {
-              'hsk_level': hsk_level,
-              'pinyin': pinyin,
-              'definition': definition,
-              'type': 'vocabulary',
-              'level': self.apply_level(vocabulary),
-            }
+            data[vocabulary] = self.get_data(pinyin, definition, vocabulary)
+            data[vocabulary]['hsk_level'] = hsk_level
+
+
+    def extract_food(self):
+      with open('wanikani/static/data/sources/foods.txt', 'r') as file:
+        for line in file.read().split('\n')[1:]:
+          split_line = line.split('\t')
+          chinese = split_line[3]
+          if self.check_character_stored(chinese):
+            definition = split_line[0]
+            pinyin = split_line[5]
+            data[chinese] = self.get_data(pinyin, definition, chinese)
+          else:
+            print(chinese, "not in database")
+
+
+    def get_data(self, pinyin, definition, chinese):
+      return {
+        'pinyin': pinyin,
+        'definition': definition,
+        'type': 'vocabulary',
+        'level': self.apply_level(chinese),
+      }
+
     
     def check_character_stored(self, vocabulary):
       for character in vocabulary:

@@ -500,6 +500,16 @@
     ],
     "type": "character"
   },
+  "卤": {
+    "pinyin": [
+      "lu3"
+    ],
+    "definition": [
+      "to stew in soy sauce and spices",
+      "alkaline soil"
+    ],
+    "type": "character"
+  },
   "雨": {
     "hsk_level": 1,
     "frequency": 928,
@@ -997,6 +1007,26 @@
       "(plural marker for pronouns and a few animate nouns)"
     ],
     "type": "character"
+  },
+  "蔥": {
+    "pinyin": [
+      "cong4"
+    ],
+    "definition": [
+      "green onion",
+      "onion"
+    ]
+  },
+  "罗": {
+    "pinyin": [
+      "luo2"
+    ],
+    "definition": [
+      "to collect",
+      "to gather",
+      "to catch",
+      "to sift"
+    ]
   },
   "面": {
     "hsk_level": 1,
@@ -15007,6 +15037,16 @@
     ],
     "type": "character"
   },
+  "焖": {
+    "pinyin": [
+      "men2"
+    ],
+    "definition": [
+      "simmer",
+      "cook over slow fire"
+    ],
+    "type": "character"
+  },
   "膏": {
     "hsk_level": 4,
     "frequency": 2673,
@@ -15766,6 +15806,37 @@
     ],
     "definition": [
       "bone"
+    ],
+    "type": "character"
+  },
+  "芝": {
+    "pinyin": [
+      "zhi1"
+    ],
+    "definition": [
+      "sesame"
+    ],
+    "type": "character"
+  },
+  "龟": {
+    "pinyin": [
+      "gui1"
+    ],
+    "definition": [
+      "turtle",
+      "tortoise"
+    ],
+    "type": "character"
+  },
+  "苓": {
+    "pinyin": [
+      "ling2",
+      "lian2"
+    ],
+    "definition": [
+      "fungus",
+      "tuber",
+      "licorice"
     ],
     "type": "character"
   },
@@ -27734,6 +27805,16 @@
       "associate with",
       "five",
       "company"
+    ],
+    "type": "character"
+  },
+  "虾": {
+    "pinyin": [
+      "xia1"
+    ],
+    "definition": [
+      "prawn",
+      "shrimp"
     ],
     "type": "character"
   },

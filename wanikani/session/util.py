@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from wanikani.models import BaseCharacter, ProgressCharacter
 

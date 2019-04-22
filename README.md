@@ -10,6 +10,7 @@ Wanikani is a great way to learn kanji. According to the forums, there's no good
 - Other character data from http://ccdb.hemiola.com/characters/?filter=gb&fields=kDefinition,kMandarin,string, which came from http://www.unicode.org/charts/unihan.html
 - City and province data from https://en.wikipedia.org/wiki/List_of_cities_in_China_by_population_and_built-up_area
 - Idioms from https://www.saporedicina.com/english/list-chengyu/ and https://www.chinasage.info/proverbstrive.htm
+- Foods from https://en.wikipedia.org/wiki/List_of_Chinese_dishes
 
 # Initializing the app
 - Ensure you have python 3.7
